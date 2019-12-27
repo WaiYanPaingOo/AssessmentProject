@@ -4,7 +4,6 @@ public class Road_Obj {
     private int width;
     private Road_Block[] r_obj_ary;
     private char direction;
-
     private TrafficLight_Obj obj;
 
     public Road_Obj(int width, char direction) {
@@ -38,7 +37,7 @@ public class Road_Obj {
         this.direction = direction;
     }
 
-    public Road_Block getV_obj_ary(int index)
+    public Road_Block getR_obj_ary(int index)
     {
         return this.r_obj_ary[index];
     }

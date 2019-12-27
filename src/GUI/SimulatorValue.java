@@ -12,7 +12,6 @@ import java.util.ArrayList;
 
 public class SimulatorValue extends JFrame implements WindowListener {
     //test values
-    boolean loopStatus = false;
     int roadX=9, roadY=0;
     int roadX2=9, roadY2=10;
     int carX =9, carY=0;
@@ -60,7 +59,7 @@ public class SimulatorValue extends JFrame implements WindowListener {
 
     Simulator_Obj underObjectTemp;
 
-    public void showMap()
+    void showMap()
     {
         try
         {
@@ -92,7 +91,7 @@ public class SimulatorValue extends JFrame implements WindowListener {
         }
     }
 
-    public void showCars()
+    void showCars()
     {
         int loop_size = vehicleAry.size();
         Vehicle_Block[] temp = new Vehicle_Block[loop_size];
@@ -129,9 +128,9 @@ public class SimulatorValue extends JFrame implements WindowListener {
         }
     }
 
-    void trafficTimerSwitch(boolean o)
+    void trafficTimerSwitch(boolean status)
     {
-        if(o)
+        if(status)
         {
             trafficTimer.start();
         }
@@ -140,13 +139,7 @@ public class SimulatorValue extends JFrame implements WindowListener {
         }
     }
 
-    public void updateTrafficLight(int x, int y){
-        System.out.println("x -" + x + "y -" + y + " pic - ");
-        System.out.println("obj at -" + objAry[x][y]);
-        //ground[x][y].setIcon(new ImageIcon(objAry[x][y].getPic_location()));
-    }
-
-    void moveCars(){
+    private void moveCars(){
         for(int i = 0; i< vehicleAry.size(); i++)
         {
             int temp_x = vehicleAry.get(i).getX_location();
@@ -193,7 +186,7 @@ public class SimulatorValue extends JFrame implements WindowListener {
         for(int i=0; i<new_road.getWidth(); i++)
         {
             underObjectTemp = objAry[x][y];
-            objAry[x][y] = new_road.getV_obj_ary(i);
+            objAry[x][y] = new_road.getR_obj_ary(i);
             objAry[x][y].setUnder(underObjectTemp);
             ground[x][y].setIcon(new ImageIcon(objAry[x][y].getPic_location()));
             y++;
@@ -216,11 +209,6 @@ public class SimulatorValue extends JFrame implements WindowListener {
         objAry[x][y].setUnder(underObjectTemp);
         objAry[x][y].setTraffic_light(obj);
         ground[x][y].setIcon(new ImageIcon(objAry[x][y].getPic_location()));
-    }
-
-    void getTest(int x, int y)
-    {
-        System.out.println(objAry[x][y]);
     }
 
     void spawnCar(int x, int y)

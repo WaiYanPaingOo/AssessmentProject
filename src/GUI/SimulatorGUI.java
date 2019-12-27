@@ -7,12 +7,9 @@ import java.awt.event.ActionListener;
 
 public class SimulatorGUI extends SimulatorValue implements ActionListener {
 
-    protected JPanel panel2 = new JPanel();//button panel
-    //protected JPanel panel3 = new JPanel();//info panel
-
-    JButton goBtn = new JButton("Go");//button
-    JButton stopBtn = new JButton("Stop");
-    JButton addCarBtn = new JButton("Add Car");
+    private JButton goBtn = new JButton("Go");//button
+    private JButton stopBtn = new JButton("Stop");
+    private JButton addCarBtn = new JButton("Add Car");
 
     public SimulatorGUI()
     {
@@ -25,6 +22,8 @@ public class SimulatorGUI extends SimulatorValue implements ActionListener {
 
         add(panel1, BorderLayout.CENTER);
 
+        //button panel
+        JPanel panel2 = new JPanel();
         panel2.setLayout(new FlowLayout(FlowLayout.CENTER));
         panel2.add(goBtn);
         panel2.add(stopBtn);
