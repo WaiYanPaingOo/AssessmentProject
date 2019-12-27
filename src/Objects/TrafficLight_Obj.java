@@ -1,11 +1,5 @@
 package Objects;
 
-import GUI.SimulatorValue;
-
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 public class TrafficLight_Obj extends Simulator_Obj {
     private boolean is_red = false;
     private int x_location;
