@@ -22,7 +22,7 @@ public class SimulatorGUI extends SimulatorValue implements ActionListener {
 
         add(panel1, BorderLayout.CENTER);
 
-        //button panel
+        //button panel/
         JPanel panel2 = new JPanel();
         panel2.setLayout(new FlowLayout(FlowLayout.CENTER));
         panel2.add(goBtn);
