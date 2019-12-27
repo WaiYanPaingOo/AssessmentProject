@@ -7,13 +7,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class TrafficLight_Obj extends Simulator_Obj {
-    protected boolean is_red = false;
+    private boolean is_red = false;
     private int x_location;
     private int y_location;
 
     public TrafficLight_Obj(int x_location, int y_location) {
         super("Traffic Light Block", "/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/Green_Light.png",
-                false, null, 'n', false, null);
+                false, null, 'E', false, null);
         this.x_location = x_location;
         this.y_location = y_location;
     }

@@ -1,9 +1,9 @@
 package Objects;
 
 public class Road_Obj {
-    protected int width;
-    protected Road_Block[] r_obj_ary;
-    protected char direction;
+    private int width;
+    private Road_Block[] r_obj_ary;
+    private char direction;
 
     private TrafficLight_Obj obj;
 
