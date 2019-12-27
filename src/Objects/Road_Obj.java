@@ -42,7 +42,7 @@ public class Road_Obj {
         return this.r_obj_ary[index];
     }
 
-    public void build_ary(){
+    private void build_ary(){
         for(int i=0; i<r_obj_ary.length; i++){
             r_obj_ary[i] = new Road_Block();
             r_obj_ary[i].setDirection(this.direction);
