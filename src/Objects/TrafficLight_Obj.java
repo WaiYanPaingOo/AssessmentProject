@@ -1,18 +1,55 @@
 package Objects;
 
-public class TrafficLight_Obj extends Simulator_Obj{
-    protected boolean is_red;
+import GUI.SimulatorValue;
 
-    public TrafficLight_Obj() {
-        super("Traffic Light Block", "/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/TrafficLight.png",
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class TrafficLight_Obj extends Simulator_Obj {
+    protected boolean is_red = false;
+    private int x_location;
+    private int y_location;
+
+    public TrafficLight_Obj(int x_location, int y_location) {
+        super("Traffic Light Block", "/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/Green_Light.png",
                 false, null, 'n', false, null);
+        this.x_location = x_location;
+        this.y_location = y_location;
     }
 
     public boolean get_is_red() {
         return is_red;
     }
 
-    public void set_is_red(boolean status) {
-        this.is_red = status;
+    public void set_is_red() {
+
+        if(this.is_red)
+        {
+            this.setPic_location("/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/Green_Light.png");
+            this.is_red = false;
+        }
+        else
+        {
+            this.setPic_location("/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/Red_Light.jpg");
+            this.is_red = true;
+        }
+
+    }
+
+    public int getX_location() {
+        return x_location;
+    }
+
+    public void setX_location(int x_location) {
+        this.x_location = x_location;
+    }
+
+    public int getY_location() {
+        return y_location;
+    }
+
+    public void setY_location(int y_location) {
+        this.y_location = y_location;
     }
 }

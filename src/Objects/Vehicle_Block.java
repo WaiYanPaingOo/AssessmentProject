@@ -1,7 +1,6 @@
 package Objects;
 
 public class Vehicle_Block extends Simulator_Obj{
-    private int vehicle_id;
     private int x_location;
     private int y_location;
     public Vehicle_Block(int x_location, int y_location){
@@ -9,14 +8,6 @@ public class Vehicle_Block extends Simulator_Obj{
                 false, null, 'E', false, null);
         this.x_location = x_location;
         this.y_location = y_location;
-    }
-
-    public int getVehicle_id() {
-        return vehicle_id;
-    }
-
-    public void setVehicle_id(int vehicle_id) {
-        this.vehicle_id = vehicle_id;
     }
 
     public int getX_location() {

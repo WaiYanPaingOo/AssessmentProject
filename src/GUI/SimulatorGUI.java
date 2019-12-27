@@ -11,7 +11,7 @@ public class SimulatorGUI extends SimulatorValue implements ActionListener {
     //protected JPanel panel3 = new JPanel();//info panel
 
     JButton goBtn = new JButton("Go");//button
-    JButton addRoadBtn = new JButton("Add Road");
+    JButton stopBtn = new JButton("Stop");
     JButton addCarBtn = new JButton("Add Car");
 
     public SimulatorGUI()
@@ -27,16 +27,17 @@ public class SimulatorGUI extends SimulatorValue implements ActionListener {
 
         panel2.setLayout(new FlowLayout(FlowLayout.CENTER));
         panel2.add(goBtn);
+        panel2.add(stopBtn);
         panel2.add(addCarBtn);
-        panel2.add(addRoadBtn);
+
 
         goBtn.addActionListener(this);
         addCarBtn.addActionListener(this);
-        addRoadBtn.addActionListener(this);
+        stopBtn.addActionListener(this);
 
         goBtn.setBackground(paint);
         addCarBtn.setBackground(paint);
-        addRoadBtn.setBackground(paint);
+        stopBtn.setBackground(paint);
 
         add(panel2, BorderLayout.PAGE_START);
 
@@ -46,6 +47,9 @@ public class SimulatorGUI extends SimulatorValue implements ActionListener {
         setFocusable(true);
         setVisible(true);
         pack();
+
+        addRoad(roadX, roadY, 10, 'E', true);
+        addRoad(roadX2, roadY2, 10, 'E',false);
     }
 
     @Override
@@ -53,13 +57,13 @@ public class SimulatorGUI extends SimulatorValue implements ActionListener {
         Object source = e.getSource();
         if (source == goBtn)
         {
-            moveCars();
-            showCars();
+            carTimer.start();
+            trafficTimerSwitch(true);
         }
-        else if (source == addRoadBtn)
+        else if (source == stopBtn)
         {
-            addRoad(roadX, roadY, 10, 'E');
-            addRoad(roadX2, roadY2, 10, 'E');
+            carTimer.stop();
+            trafficTimerSwitch(false);
         }
         else if(source == addCarBtn)
         {

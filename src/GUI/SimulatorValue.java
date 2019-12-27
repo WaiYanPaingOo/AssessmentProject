@@ -4,16 +4,22 @@ import Objects.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
 
 public class SimulatorValue extends JFrame implements WindowListener {
     //test values
+    boolean loopStatus = false;
     int roadX=9, roadY=0;
     int roadX2=9, roadY2=10;
     int carX =9, carY=0;
     int trafficX = 8, trafficY = 9;
+
+    int carSpeed = 500;
+    int trafficLightSpeed = 4000;
     // for map grid
     private int ROW = 20, COL = 20, GAP = 0;
 
@@ -22,7 +28,32 @@ public class SimulatorValue extends JFrame implements WindowListener {
     private Simulator_Obj[][] objAry = new Simulator_Obj[ROW][COL];
 
 
+    //timers
+    Timer carTimer = new Timer(carSpeed, new ActionListener(){
+        public void actionPerformed(ActionEvent e) {
+            moveCars();
+            showCars();
+        }
+    });
+
+    Timer trafficTimer = new Timer(trafficLightSpeed, new ActionListener(){
+        public void actionPerformed(ActionEvent e) {
+            int loop_size = trafficAry.size();
+
+            for(int i = 0; i < loop_size; i++)
+            {
+                int temp_x = trafficAry.get(i).getX_location();
+                int temp_y = trafficAry.get(i).getY_location();
+                trafficAry.get(i).set_is_red();
+                ground[temp_x][temp_y].setIcon(new ImageIcon(objAry[temp_x][temp_y].getPic_location()));
+            }
+        }
+    });
+
+
     private ArrayList<Vehicle_Block> vehicleAry = new ArrayList<>();
+
+    private ArrayList<TrafficLight_Obj> trafficAry= new ArrayList<>();
     //protected int available_id = 0;
 
     Color paint = new Color(122, 145, 21);
@@ -71,17 +102,17 @@ public class SimulatorValue extends JFrame implements WindowListener {
         }
 
 
-        int count = 0;
+
         for(int i = 0; i < loop_size; i++)
         {
             int temp_x = temp[i].getX_location();
             int temp_y = temp[i].getY_location();
-            System.out.println("status" + count);
-            count++;
+            //System.out.println("status" + count);
+
             if(temp_y >= COL)
             {
                 vehicleAry.remove(i);
-               System.out.println("status" + vehicleAry);
+               //System.out.println("status" + vehicleAry);
             }
             else{
                 if(!objAry[temp_x][temp_y].getType().equals("Vehicle Block"))
@@ -98,13 +129,29 @@ public class SimulatorValue extends JFrame implements WindowListener {
         }
     }
 
+    void trafficTimerSwitch(boolean o)
+    {
+        if(o)
+        {
+            trafficTimer.start();
+        }
+        else{
+            trafficTimer.stop();
+        }
+    }
+
+    public void updateTrafficLight(int x, int y){
+        System.out.println("x -" + x + "y -" + y + " pic - ");
+        System.out.println("obj at -" + objAry[x][y]);
+        //ground[x][y].setIcon(new ImageIcon(objAry[x][y].getPic_location()));
+    }
+
     void moveCars(){
         for(int i = 0; i< vehicleAry.size(); i++)
         {
-
-            System.out.println("it moves" + vehicleAry.size() + "/" + vehicleAry.get(i).getY_location());
             int temp_x = vehicleAry.get(i).getX_location();
             int temp_y = vehicleAry.get(i).getY_location();
+            System.out.println("Current Location " + vehicleAry.get(i).getY_location());
 
             if(temp_y == COL-1)
             {
@@ -117,10 +164,10 @@ public class SimulatorValue extends JFrame implements WindowListener {
                 if(objAry[temp_x][temp_y+1].isDrivable())
                 {
                     System.out.println("step 2");
-                    if(objAry[temp_x][temp_y].get_has_traffic_light())
+                    if(objAry[temp_x][temp_y].getUnder().get_has_traffic_light())
                     {
                         System.out.println("step 3");
-                        if(!objAry[temp_x][temp_y].getTraffic_light().get_is_red())
+                        if(!objAry[temp_x][temp_y].getUnder().getTraffic_light().get_is_red())
                         {
                             System.out.println("step 4");
                             vehicleAry.get(i).drive();
@@ -140,8 +187,9 @@ public class SimulatorValue extends JFrame implements WindowListener {
         }
     }
 
-    void addRoad(int x, int y, int w, char dir){
+    void addRoad(int x, int y, int w, char dir, boolean add_trafficLight){
         Road_Obj new_road = new Road_Obj(w, dir);
+
         for(int i=0; i<new_road.getWidth(); i++)
         {
             underObjectTemp = objAry[x][y];
@@ -150,11 +198,43 @@ public class SimulatorValue extends JFrame implements WindowListener {
             ground[x][y].setIcon(new ImageIcon(objAry[x][y].getPic_location()));
             y++;
         }
+
+        if(add_trafficLight)
+        {
+            TrafficLight_Obj new_trafficLight = new TrafficLight_Obj(trafficX, trafficY);
+            new_road.addTrafficLight(new_trafficLight);
+            this.addTrafficLight(trafficX, trafficY, 'E', new_trafficLight);
+
+            trafficAry.add(new_trafficLight);
+        }
+
     }
-    public void spawnCar(int x, int y)
+
+    private void addTrafficLight(int x, int y, char dir, TrafficLight_Obj obj){
+        underObjectTemp = objAry[x][y];
+        objAry[x][y] = obj;
+        objAry[x][y].setUnder(underObjectTemp);
+        objAry[x][y].setTraffic_light(obj);
+        ground[x][y].setIcon(new ImageIcon(objAry[x][y].getPic_location()));
+    }
+
+    void getTest(int x, int y)
+    {
+        System.out.println(objAry[x][y]);
+    }
+
+    void spawnCar(int x, int y)
     {
         vehicleAry.add(new Vehicle_Block(x, y));
     }
+
+    //Asg1
+    /*void changeTraffic(boolean isRed)
+    {
+        objAry[trafficX][trafficY].getTraffic_light().set_is_red(isRed);
+        ground[trafficX][trafficY].setIcon(new ImageIcon(objAry[trafficX][trafficY].getPic_location()));
+    }*/
+
 
     @Override
     public void windowOpened(WindowEvent e) {

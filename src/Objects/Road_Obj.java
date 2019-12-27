@@ -5,6 +5,8 @@ public class Road_Obj {
     protected Road_Block[] r_obj_ary;
     protected char direction;
 
+    private TrafficLight_Obj obj;
+
     public Road_Obj(int width, char direction) {
         this.width = width;
         this.direction = direction;
@@ -46,5 +48,12 @@ public class Road_Obj {
             r_obj_ary[i] = new Road_Block();
             r_obj_ary[i].setDirection(this.direction);
         }
+    }
+    public void addTrafficLight(TrafficLight_Obj obj)
+    {
+        this.obj = obj;
+        int pos = this.r_obj_ary.length - 1;
+        r_obj_ary[pos].set_has_traffic_light(true);
+        r_obj_ary[pos].setTraffic_light(this.obj);
     }
 }
