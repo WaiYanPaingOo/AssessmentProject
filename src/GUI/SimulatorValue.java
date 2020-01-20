@@ -23,6 +23,7 @@ public class SimulatorValue extends JFrame implements WindowListener {
     private int ROW = 20, COL = 20, GAP = 0;
 
     JPanel panel1 = new JPanel(new GridLayout(ROW, COL, GAP, GAP));//game panel
+    JPanel p_edit = new JPanel(new GridLayout(ROW, COL, GAP, GAP));//Edit panel
     private JLabel[][] ground = new JLabel[ROW][COL];//game array
     private Simulator_Obj[][] objAry = new Simulator_Obj[ROW][COL];
 
