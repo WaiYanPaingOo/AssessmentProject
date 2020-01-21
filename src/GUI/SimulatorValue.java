@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class SimulatorValue extends JFrame implements WindowListener {
     //test values
@@ -23,33 +24,12 @@ public class SimulatorValue extends JFrame implements WindowListener {
     private int ROW = 20, COL = 20, GAP = 0;
 
     JPanel panel1 = new JPanel(new GridLayout(ROW, COL, GAP, GAP));//game panel
-    JPanel p_edit = new JPanel(new GridLayout(ROW, COL, GAP, GAP));//Edit panel
-    private JLabel[][] ground = new JLabel[ROW][COL];//game array
-    private Simulator_Obj[][] objAry = new Simulator_Obj[ROW][COL];
+    private JLabel[][] ground_G = new JLabel[ROW][COL];//game array
+    private Simulator_Obj[][] objAry_G = new Simulator_Obj[ROW][COL];
 
-
-    //timers
-    Timer carTimer = new Timer(carSpeed, new ActionListener(){
-        public void actionPerformed(ActionEvent e) {
-            moveCars();
-            showCars();
-        }
-    });
-
-    Timer trafficTimer = new Timer(trafficLightSpeed, new ActionListener(){
-        public void actionPerformed(ActionEvent e) {
-            int loop_size = trafficAry.size();
-
-            for(int i = 0; i < loop_size; i++)
-            {
-                int temp_x = trafficAry.get(i).getX_location();
-                int temp_y = trafficAry.get(i).getY_location();
-                trafficAry.get(i).set_is_red();
-                ground[temp_x][temp_y].setIcon(new ImageIcon(objAry[temp_x][temp_y].getPic_location()));
-            }
-        }
-    });
-
+    private JLabel[][] ground_E = new JLabel[ROW][COL];//game array
+    private Simulator_Obj[][] objAry_E = new Simulator_Obj[ROW][COL];
+    private Random r = new Random();
 
     private ArrayList<Vehicle_Block> vehicleAry = new ArrayList<>();
 
@@ -60,6 +40,51 @@ public class SimulatorValue extends JFrame implements WindowListener {
 
     Simulator_Obj underObjectTemp;
 
+
+    //timers
+    Timer carTimer = new Timer(carSpeed, new ActionListener(){
+        public void actionPerformed(ActionEvent e) {
+            if(vehicleAry.size() < 6) {
+                int x = r.nextInt();
+                if (x % 8 == 0) {
+                    spawnCar(carX, carY);
+                    showCars();
+                }
+            }
+            moveCars();
+            showCars();
+        }
+    });
+    Timer trafficTimer = new Timer(trafficLightSpeed, new ActionListener(){
+        public void actionPerformed(ActionEvent e) {
+            int loop_size = trafficAry.size();
+
+            for(int i = 0; i < loop_size; i++)
+            {
+                int temp_x = trafficAry.get(i).getX_location();
+                int temp_y = trafficAry.get(i).getY_location();
+                trafficAry.get(i).set_is_red();
+                ground_G[temp_x][temp_y].setIcon(new ImageIcon(objAry_G[temp_x][temp_y].getPic_location()));
+            }
+        }
+    });
+
+    void trafficTimerSwitch(boolean status)
+    {
+        if(status)
+        {
+            trafficTimer.start();
+        }
+        else{
+            trafficTimer.stop();
+        }
+    }
+    void spawnCar(int x, int y)
+    {
+        vehicleAry.add(new Vehicle_Block(x, y));
+    }
+
+    //map
     void showMap()
     {
         try
@@ -69,7 +94,7 @@ public class SimulatorValue extends JFrame implements WindowListener {
             {
                 for (int j = 0; j < COL; j++)
                 {
-                    objAry[i][j] = new Grass_Block();
+                    objAry_G[i][j] = new Grass_Block();
                 }
                 i++;
             }
@@ -80,16 +105,37 @@ public class SimulatorValue extends JFrame implements WindowListener {
         try {
             for (int i = 0; i < ROW; i++) {
                 for (int j = 0; j < COL; j++) {
-                    ground[i][j] = new JLabel();
-                    ground[i][j].setIcon(new ImageIcon(objAry[i][j].getPic_location()));
-                    ground[i][j].setPreferredSize(new Dimension(46, 46));
-                    panel1.add(ground[i][j]);
+                    ground_G[i][j] = new JLabel();
+                    ground_G[i][j].setIcon(new ImageIcon(objAry_G[i][j].getPic_location()));
+                    ground_G[i][j].setPreferredSize(new Dimension(46, 46));
+                    panel1.add(ground_G[i][j]);
                 }
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Map Generate Error");
             dispose();
         }
+    }
+    void clearCars()
+    {
+        int i = 0, temp_x=0, temp_y=0;
+        int loop_size = vehicleAry.size();
+        Vehicle_Block[] temp = new Vehicle_Block[loop_size];
+
+        for(int j = 0; j < temp.length; j++){
+            temp[j] = vehicleAry.get(j);
+        }
+
+        for(i = 0; i < temp.length; i++)
+        {
+            temp_x = temp[i].getX_location();
+            temp_y = temp[i].getY_location();
+
+            underObjectTemp = objAry_G[temp_x][temp_y].getUnder();
+            objAry_G[temp_x][temp_y] = underObjectTemp;
+            ground_G[temp_x][temp_y].setIcon(new ImageIcon(objAry_G[temp_x][temp_y].getPic_location()));
+        }
+        vehicleAry.clear();
     }
 
     void showCars()
@@ -115,28 +161,15 @@ public class SimulatorValue extends JFrame implements WindowListener {
                //System.out.println("status" + vehicleAry);
             }
             else{
-                if(!objAry[temp_x][temp_y].getType().equals("Vehicle Block"))
+                if(!objAry_G[temp_x][temp_y].getType().equals("Vehicle Block"))
                 {
-                    underObjectTemp =  objAry[temp_x][temp_y];
-                    objAry[temp_x][temp_y] = temp[i];
-                    objAry[temp_x][temp_y].setUnder(underObjectTemp);
-                    ground[temp_x][temp_y].setIcon(new ImageIcon(objAry[temp_x][temp_y].getPic_location()));
+                    underObjectTemp =  objAry_G[temp_x][temp_y];
+                    objAry_G[temp_x][temp_y] = temp[i];
+                    objAry_G[temp_x][temp_y].setUnder(underObjectTemp);
+                    ground_G[temp_x][temp_y].setIcon(new ImageIcon(objAry_G[temp_x][temp_y].getPic_location()));
                 }
             }
 
-
-
-        }
-    }
-
-    void trafficTimerSwitch(boolean status)
-    {
-        if(status)
-        {
-            trafficTimer.start();
-        }
-        else{
-            trafficTimer.stop();
         }
     }
 
@@ -145,34 +178,34 @@ public class SimulatorValue extends JFrame implements WindowListener {
         {
             int temp_x = vehicleAry.get(i).getX_location();
             int temp_y = vehicleAry.get(i).getY_location();
-            System.out.println("Current Location " + vehicleAry.get(i).getY_location());
+           // System.out.println("Current Location " + vehicleAry.get(i).getY_location());
 
             if(temp_y == COL-1)
             {
                 vehicleAry.get(i).drive();
-                objAry[temp_x][temp_y] = objAry[temp_x][temp_y].getUnder();
-                ground[temp_x][temp_y].setIcon(new ImageIcon(objAry[temp_x][temp_y].getPic_location()));
+                objAry_G[temp_x][temp_y] = objAry_G[temp_x][temp_y].getUnder();
+                ground_G[temp_x][temp_y].setIcon(new ImageIcon(objAry_G[temp_x][temp_y].getPic_location()));
             }
             else{
-                System.out.println("step 1");
-                if(objAry[temp_x][temp_y+1].isDrivable())
+                //System.out.println("step 1");
+                if(objAry_G[temp_x][temp_y+1].isDrivable())
                 {
-                    System.out.println("step 2");
-                    if(objAry[temp_x][temp_y].getUnder().get_has_traffic_light())
+                    //System.out.println("step 2");
+                    if(objAry_G[temp_x][temp_y].getUnder().get_has_traffic_light())
                     {
-                        System.out.println("step 3");
-                        if(!objAry[temp_x][temp_y].getUnder().getTraffic_light().get_is_red())
+                        //System.out.println("step 3");
+                        if(!objAry_G[temp_x][temp_y].getUnder().getTraffic_light().get_is_red())
                         {
-                            System.out.println("step 4");
+                            //System.out.println("step 4");
                             vehicleAry.get(i).drive();
-                            objAry[temp_x][temp_y] = objAry[temp_x][temp_y].getUnder();
-                            ground[temp_x][temp_y].setIcon(new ImageIcon(objAry[temp_x][temp_y].getPic_location()));
+                            objAry_G[temp_x][temp_y] = objAry_G[temp_x][temp_y].getUnder();
+                            ground_G[temp_x][temp_y].setIcon(new ImageIcon(objAry_G[temp_x][temp_y].getPic_location()));
                         }
                     }
                     else{
                         vehicleAry.get(i).drive();
-                        objAry[temp_x][temp_y] = objAry[temp_x][temp_y].getUnder();
-                        ground[temp_x][temp_y].setIcon(new ImageIcon(objAry[temp_x][temp_y].getPic_location()));
+                        objAry_G[temp_x][temp_y] = objAry_G[temp_x][temp_y].getUnder();
+                        ground_G[temp_x][temp_y].setIcon(new ImageIcon(objAry_G[temp_x][temp_y].getPic_location()));
                     }
                 }
             }
@@ -186,10 +219,10 @@ public class SimulatorValue extends JFrame implements WindowListener {
 
         for(int i=0; i<new_road.getWidth(); i++)
         {
-            underObjectTemp = objAry[x][y];
-            objAry[x][y] = new_road.getR_obj_ary(i);
-            objAry[x][y].setUnder(underObjectTemp);
-            ground[x][y].setIcon(new ImageIcon(objAry[x][y].getPic_location()));
+            underObjectTemp = objAry_G[x][y];
+            objAry_G[x][y] = new_road.getR_obj_ary(i);
+            objAry_G[x][y].setUnder(underObjectTemp);
+            ground_G[x][y].setIcon(new ImageIcon(objAry_G[x][y].getPic_location()));
             y++;
         }
 
@@ -205,16 +238,11 @@ public class SimulatorValue extends JFrame implements WindowListener {
     }
 
     private void addTrafficLight(int x, int y, char dir, TrafficLight_Obj obj){
-        underObjectTemp = objAry[x][y];
-        objAry[x][y] = obj;
-        objAry[x][y].setUnder(underObjectTemp);
-        objAry[x][y].setTraffic_light(obj);
-        ground[x][y].setIcon(new ImageIcon(objAry[x][y].getPic_location()));
-    }
-
-    void spawnCar(int x, int y)
-    {
-        vehicleAry.add(new Vehicle_Block(x, y));
+        underObjectTemp = objAry_G[x][y];
+        objAry_G[x][y] = obj;
+        objAry_G[x][y].setUnder(underObjectTemp);
+        objAry_G[x][y].setTraffic_light(obj);
+        ground_G[x][y].setIcon(new ImageIcon(objAry_G[x][y].getPic_location()));
     }
 
     //Asg1

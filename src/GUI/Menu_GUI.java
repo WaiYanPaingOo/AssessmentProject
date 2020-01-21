@@ -4,8 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 
 public class Menu_GUI extends SimulatorValue implements ActionListener {
     private JButton btn_play = new JButton("Start Simulator");//button
@@ -54,7 +52,8 @@ public class Menu_GUI extends SimulatorValue implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
         if (source == btn_play) {
-            new Editing_GUI();
+            new Game_GUI();
+            //new SimulatorGUI();
             this.dispose();
         } else if (source == btn_exit) {
             this.dispose();
