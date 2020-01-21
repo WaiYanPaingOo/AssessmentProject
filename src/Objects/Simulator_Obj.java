@@ -4,11 +4,11 @@ public class Simulator_Obj {
     private String type, pic_location;
     private boolean drivable;
     private Simulator_Obj under;
-    private char direction;
+    private char[] direction;
     private boolean has_traffic_light;
     private TrafficLight_Obj traffic_light;
 
-    public Simulator_Obj(String type, String pic_location, boolean drivable, Simulator_Obj under, char direction,
+    public Simulator_Obj(String type, String pic_location, boolean drivable, Simulator_Obj under, char[] direction,
                          boolean has_traffic_light, TrafficLight_Obj traffic_light) {
         this.type = type;
         this.pic_location = pic_location;
@@ -51,11 +51,11 @@ public class Simulator_Obj {
         this.under = under;
     }
 
-    public char getDirection() {
+    public char[] getDirection() {
         return direction;
     }
 
-    public void setDirection(char direction) {
+    public void setDirection(char[] direction) {
         this.direction = direction;
     }
 

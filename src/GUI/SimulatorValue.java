@@ -13,15 +13,23 @@ import java.util.Random;
 
 public class SimulatorValue extends JFrame implements WindowListener {
     //test values
-    int roadX=9, roadY=0;
-    int roadX2=9, roadY2=10;
-    int carX =9, carY=0;
+    int roadX=8, roadY=0;
+    int roadX2=8, roadY2=6;
+    int roadX3=8, roadY3=12;
+    int roadX4=8, roadY4=18;
+
+    int roadXVb1 = 12, roadYVb1 = 8;
+    int roadXVb2 = 18, roadYVb2 = 8;
+
+    int roadXVt1 = 0, roadYVt1 = 8;
+
+    int carX =8, carY=0;
     int trafficX = 8, trafficY = 9;
 
     int carSpeed = 500;
     int trafficLightSpeed = 4000;
     // for map grid
-    private int ROW = 20, COL = 20, GAP = 0;
+    private int ROW = 24, COL = 24, GAP = 0;
 
     JPanel panel1 = new JPanel(new GridLayout(ROW, COL, GAP, GAP));//game panel
     private JLabel[][] ground_G = new JLabel[ROW][COL];//game array
@@ -44,6 +52,8 @@ public class SimulatorValue extends JFrame implements WindowListener {
     //timers
     Timer carTimer = new Timer(carSpeed, new ActionListener(){
         public void actionPerformed(ActionEvent e) {
+            moveCars();
+            showCars();
             if(vehicleAry.size() < 6) {
                 int x = r.nextInt();
                 if (x % 8 == 0) {
@@ -51,8 +61,6 @@ public class SimulatorValue extends JFrame implements WindowListener {
                     showCars();
                 }
             }
-            moveCars();
-            showCars();
         }
     });
     Timer trafficTimer = new Timer(trafficLightSpeed, new ActionListener(){
@@ -81,7 +89,7 @@ public class SimulatorValue extends JFrame implements WindowListener {
     }
     void spawnCar(int x, int y)
     {
-        vehicleAry.add(new Vehicle_Block(x, y));
+        vehicleAry.add(new Vehicle_Block(x, y, new char[]{'E'}));
     }
 
     //map
@@ -214,26 +222,81 @@ public class SimulatorValue extends JFrame implements WindowListener {
         }
     }
 
-    void addRoad(int x, int y, int w, char dir, boolean add_trafficLight){
-        Road_Obj new_road = new Road_Obj(w, dir);
-
-        for(int i=0; i<new_road.getWidth(); i++)
+    void addRoad(int x, int y, int ways, char rot){
+        Simulator_Obj[][] temp_obj;
+        if(ways == 4)
         {
-            underObjectTemp = objAry_G[x][y];
-            objAry_G[x][y] = new_road.getR_obj_ary(i);
-            objAry_G[x][y].setUnder(underObjectTemp);
-            ground_G[x][y].setIcon(new ImageIcon(objAry_G[x][y].getPic_location()));
-            y++;
+            Road_Obj_4Way new_road_comp = new Road_Obj_4Way(ROW, COL,x,y);
+            temp_obj = new_road_comp.get_objAry();
+            int i = 0;
+            while (i < ROW)
+            {
+                for (int j = 0; j < COL; j++)
+                {
+                    if(temp_obj[i][j].getType().equals("Grass Block"))
+                    {
+
+                    }
+                    else{
+                        System.out.println("i value " + i + " j value" + j + " type " + temp_obj[i][j].getType());
+                        underObjectTemp = objAry_G[i][j];
+                        objAry_G[i][j] = temp_obj[i][j];
+                        objAry_G[i][j].setUnder(underObjectTemp);
+                        ground_G[i][j].setIcon(new ImageIcon(objAry_G[i][j].getPic_location()));
+                    }
+
+                }
+                i++;
+            }
+        }
+        else if(ways == 1)
+        {
+            Road_Obj_1Way new_road_comp = new Road_Obj_1Way(ROW, COL,x, y, rot);
+            temp_obj = new_road_comp.get_objAry();
+            int i = 0;
+            while (i < ROW)
+            {
+                for (int j = 0; j < COL; j++)
+                {
+                    if(temp_obj[i][j].getType().equals("Grass Block"))
+                    {
+
+                    }
+                    else{
+                        System.out.println("i value " + i + " j value" + j + " type " + temp_obj[i][j].getType());
+                        underObjectTemp = objAry_G[i][j];
+                        objAry_G[i][j] = temp_obj[i][j];
+                        objAry_G[i][j].setUnder(underObjectTemp);
+                        ground_G[i][j].setIcon(new ImageIcon(objAry_G[i][j].getPic_location()));
+                    }
+
+                }
+                i++;
+            }
+        }
+        else if(ways == 3)
+        {
+
         }
 
-        if(add_trafficLight)
-        {
-            TrafficLight_Obj new_trafficLight = new TrafficLight_Obj(trafficX, trafficY);
-            new_road.addTrafficLight(new_trafficLight);
-            this.addTrafficLight(trafficX, trafficY, 'E', new_trafficLight);
-
-            trafficAry.add(new_trafficLight);
-        }
+//        Road_Obj new_road = new Road_Obj(w, dir);
+//
+//        for(int i=0; i<new_road.getWidth(); i++)
+//        {
+//            underObjectTemp = objAry_G[x][y];
+//            objAry_G[x][y] = new_road.getR_obj_ary(i);
+//            objAry_G[x][y].setUnder(underObjectTemp);
+//            ground_G[x][y].setIcon(new ImageIcon(objAry_G[x][y].getPic_location()));
+//            y++;
+//        }
+//        if(add_trafficLight)
+//        {
+//            TrafficLight_Obj new_trafficLight = new TrafficLight_Obj(trafficX, trafficY);
+//            new_road.addTrafficLight(new_trafficLight);
+//            this.addTrafficLight(trafficX, trafficY, 'E', new_trafficLight);
+//
+//            trafficAry.add(new_trafficLight);
+//        }
 
     }
 

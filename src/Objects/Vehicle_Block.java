@@ -3,9 +3,9 @@ package Objects;
 public class Vehicle_Block extends Simulator_Obj{
     private int x_location;
     private int y_location;
-    public Vehicle_Block(int x_location, int y_location){
+    public Vehicle_Block(int x_location, int y_location, char[] direction){
         super("Vehicle Block", "/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/car.png",
-                false, null, 'E', false, null);
+                false, null, direction, false, null);
         this.x_location = x_location;
         this.y_location = y_location;
     }
@@ -28,19 +28,19 @@ public class Vehicle_Block extends Simulator_Obj{
 
     public void drive()
     {
-        if(this.getDirection() == 'E')
+        if(this.getDirection()[0] == 'E')
         {
             this.y_location++;
         }
-        else if(this.getDirection() == 'W')
+        else if(this.getDirection()[0] == 'W')
         {
             this.y_location--;
         }
-        else if(this.getDirection() == 'N')
+        else if(this.getDirection()[0] == 'N')
         {
             this.x_location++;
         }
-        else if(this.getDirection() == 'S')
+        else if(this.getDirection()[0] == 'S')
         {
             this.y_location--;
         }

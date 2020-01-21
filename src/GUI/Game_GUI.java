@@ -91,8 +91,16 @@ public class Game_GUI extends SimulatorValue implements ActionListener
         setVisible(true);
         pack();
 
-        addRoad(roadX, roadY, 10, 'E', true);
-        addRoad(roadX2, roadY2, 10, 'E',false);
+        addRoad(roadX, roadY, 1, 'H');
+        addRoad(roadX2, roadY2, 4, 'H');
+        addRoad(roadX3, roadY3, 1, 'H');
+        addRoad(roadX4, roadY4, 1, 'H');
+        addRoad(roadXVt1, roadYVt1,1,'V');
+        addRoad(roadXVb1, roadYVb1,1,'V');
+        addRoad(roadXVb2, roadYVb2,1,'V');
+
+        //addRoad(roadX, roadY, 10, 'E', true);
+        //addRoad(roadX2, roadY2, 10, 'E',false);
     }
 
     @Override

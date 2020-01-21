@@ -47,8 +47,8 @@ public class SimulatorGUI extends SimulatorValue implements ActionListener {
         setVisible(true);
         pack();
 
-        addRoad(roadX, roadY, 10, 'E', true);
-        addRoad(roadX2, roadY2, 10, 'E',false);
+        //addRoad(roadX, roadY, 10, 'E', true);
+        //addRoad(roadX2, roadY2, 10, 'E',false);
         carTimer.start();
         trafficTimerSwitch(true);
     }

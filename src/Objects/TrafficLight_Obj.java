@@ -5,9 +5,9 @@ public class TrafficLight_Obj extends Simulator_Obj {
     private int x_location;
     private int y_location;
 
-    public TrafficLight_Obj(int x_location, int y_location) {
+    public TrafficLight_Obj(int x_location, int y_location, char[] direction) {
         super("Traffic Light Block", "/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/Green_Light.png",
-                false, null, 'E', false, null);
+                false, null, direction, false, null);
         this.x_location = x_location;
         this.y_location = y_location;
     }
