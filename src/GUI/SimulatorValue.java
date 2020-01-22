@@ -24,7 +24,7 @@ public class SimulatorValue extends JFrame implements WindowListener {
     int roadXVt1 = 0, roadYVt1 = 8;
 
     int carX =8, carY=0;
-    int trafficX = 8, trafficY = 9;
+    int carX2 = 0, carY2 = 9;
 
     int carSpeed = 100;
     int trafficLightSpeed = 4000;
@@ -34,9 +34,6 @@ public class SimulatorValue extends JFrame implements WindowListener {
     JPanel panel1 = new JPanel(new GridLayout(ROW, COL, GAP, GAP));//game panel
     private JLabel[][] ground_G = new JLabel[ROW][COL];//game array
     private Simulator_Obj[][] objAry_G = new Simulator_Obj[ROW][COL];
-
-    private JLabel[][] ground_E = new JLabel[ROW][COL];//game array
-    private Simulator_Obj[][] objAry_E = new Simulator_Obj[ROW][COL];
     private Random r = new Random();
 
     private ArrayList<Road_Obj_4Way> roadObj4Ways_traffic = new ArrayList<>();
@@ -54,11 +51,54 @@ public class SimulatorValue extends JFrame implements WindowListener {
         public void actionPerformed(ActionEvent e) {
             moveCars();
             showCars();
-            if(vehicleAry.size() < 6) {
+            if(vehicleAry.size() < 12) {
                 int x = r.nextInt();
                 if (x % 8 == 0) {
-
-                    spawnCar(carX, carY);
+                    ArrayList<Integer> possible_X = new ArrayList<>();
+                    ArrayList<Integer> possible_Y = new ArrayList<>();
+                    ArrayList<Character> possible_C = new ArrayList<>();
+                    for(int i = 0; i < ROW -1; i++){
+                        if(objAry_G[i][0].getType().equals("Road Block")){
+                            if(checkDir(objAry_G[i][0].getDirection(),'E') && objAry_G[i][0].getDirection().length == 1){
+                                possible_X.add(i);
+                                possible_Y.add(0);
+                                possible_C.add('E');
+                            }
+                        }
+                    }
+                    for(int i = 0; i < COL -1; i++){
+                        if(objAry_G[0][i].getType().equals("Road Block")){
+                            if(checkDir(objAry_G[0][i].getDirection(),'S') && objAry_G[0][i].getDirection().length == 1){
+                                possible_X.add(0);
+                                possible_Y.add(i);
+                                possible_C.add('S');
+                            }
+                        }
+                    }
+                    for(int i = 0; i < ROW -1; i++){
+                        if(objAry_G[i][COL-1].getType().equals("Road Block")){
+                            if(checkDir(objAry_G[i][COL-1].getDirection(),'W') && objAry_G[i][COL-1].getDirection().length == 1){
+                                possible_X.add(i);
+                                possible_Y.add(COL-1);
+                                possible_C.add('W');
+                            }
+                        }
+                    }
+                    for(int i = 0; i < COL -1; i++){
+                        if(objAry_G[ROW-1][i].getType().equals("Road Block")){
+                            if(checkDir(objAry_G[ROW-1][i].getDirection(),'N') && objAry_G[ROW-1][i].getDirection().length == 1){
+                                possible_X.add(ROW-1);
+                                possible_Y.add(i);
+                                possible_C.add('N');
+                            }
+                        }
+                    }
+                    Random temp_r = new Random();
+                    int block = temp_r.nextInt(possible_X.size());
+                    int temp_X = possible_X.get(block);
+                    int temp_Y = possible_Y.get(block);
+                    char temp_C = possible_C.get(block);
+                    spawnCar(temp_X, temp_Y,temp_C);
                     showCars();
                 }
             }
@@ -102,9 +142,22 @@ public class SimulatorValue extends JFrame implements WindowListener {
             trafficTimer.stop();
         }
     }
-    void spawnCar(int x, int y)
+    void spawnCar(int x, int y, char d)
     {
-        vehicleAry.add(new Vehicle_Block(x, y, new char[]{'E'}));
+        String dir;
+        if(d == 'W'){
+            dir = "/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/car_W.png";
+        }
+        else if(d == 'E'){
+            dir = "/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/car_T.png";
+        }
+        else if(d == 'N'){
+            dir = "/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/car_N.png";
+        }
+        else{
+            dir = "/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/car_S.png";
+        }
+        vehicleAry.add(new Vehicle_Block(x, y, new char[]{d},dir));
     }
 
     //map
@@ -270,7 +323,7 @@ public class SimulatorValue extends JFrame implements WindowListener {
         }
     }
 
-    private boolean checkDir(char[] dir, int x, int y, char d){
+    private boolean checkDir(char[] dir, char d){
         for(int i = 0;i < dir.length; i++){
             if(dir[i] == d)
             {
@@ -303,21 +356,21 @@ public class SimulatorValue extends JFrame implements WindowListener {
                         System.out.println("Step 2: Check Drivable");
                         if(objAry_G[temp_x-1][temp_y].isDrivable()){
                             System.out.println("Step 3: Check Direction");
-                            if(checkDir(objAry_G[temp_x-1][temp_y].getDirection(),temp_x,temp_y,'E')) {
+                            if(checkDir(objAry_G[temp_x-1][temp_y].getDirection(),'E')) {
                                 possible_D.add('N');
                                 System.out.print("N is marked");
                             }
                         }
                         if(objAry_G[temp_x][temp_y+1].isDrivable()){
                             System.out.println("Step 3: Check Direction");
-                            if(checkDir(objAry_G[temp_x][temp_y+1].getDirection(),temp_x,temp_y,'E')){
+                            if(checkDir(objAry_G[temp_x][temp_y+1].getDirection(),'E')){
                                 possible_D.add('E');
                                 System.out.print("E is marked");
                             }
                         }
                         if(objAry_G[temp_x+1][temp_y].isDrivable()){
                             System.out.println("Step 3: Check Direction");
-                            if(checkDir(objAry_G[temp_x+1][temp_y].getDirection(),temp_x,temp_y,'E')){
+                            if(checkDir(objAry_G[temp_x+1][temp_y].getDirection(),'E')){
                                 possible_D.add('S');
                                 System.out.print("S is marked");
                             }
@@ -377,7 +430,7 @@ public class SimulatorValue extends JFrame implements WindowListener {
                     }
                 }
                 else if(vehicleAry.get(i).getDirection()[0] == 'W'){
-                    if(temp_y == 1)
+                    if(temp_y == 0)
                     {
                         vehicleAry.get(i).drive();
                         objAry_G[temp_x][temp_y] = objAry_G[temp_x][temp_y].getUnder();
@@ -387,21 +440,21 @@ public class SimulatorValue extends JFrame implements WindowListener {
                         System.out.println("Step 2: Check Drivable");
                         if(objAry_G[temp_x-1][temp_y].isDrivable()){
                             System.out.println("Step 3: Check Direction");
-                            if(checkDir(objAry_G[temp_x-1][temp_y].getDirection(),temp_x,temp_y,'W')) {
+                            if(checkDir(objAry_G[temp_x-1][temp_y].getDirection(),'W')) {
                                 possible_D.add('N');
                                 System.out.print("N is marked");
                             }
                         }
                         if(objAry_G[temp_x][temp_y-1].isDrivable()){
                             System.out.println("Step 3: Check Direction");
-                            if(checkDir(objAry_G[temp_x][temp_y-1].getDirection(),temp_x,temp_y,'W')){
+                            if(checkDir(objAry_G[temp_x][temp_y-1].getDirection(),'W')){
                                 possible_D.add('W');
                                 System.out.print("W is marked");
                             }
                         }
                         if(objAry_G[temp_x+1][temp_y].isDrivable()){
                             System.out.println("Step 3: Check Direction");
-                            if(checkDir(objAry_G[temp_x+1][temp_y].getDirection(),temp_x,temp_y,'W')){
+                            if(checkDir(objAry_G[temp_x+1][temp_y].getDirection(),'W')){
                                 possible_D.add('S');
                                 System.out.print("S is marked");
                             }
@@ -471,21 +524,21 @@ public class SimulatorValue extends JFrame implements WindowListener {
                         System.out.println("Step 2: Check Drivable");
                         if(objAry_G[temp_x][temp_y-1].isDrivable()){
                             System.out.println("Step 3: Check Direction");
-                            if(checkDir(objAry_G[temp_x][temp_y-1].getDirection(),temp_x,temp_y,'N')) {
+                            if(checkDir(objAry_G[temp_x][temp_y-1].getDirection(),'N')) {
                                 possible_D.add('W');
                                 System.out.print("W is marked");
                             }
                         }
                         if(objAry_G[temp_x-1][temp_y].isDrivable()){
                             System.out.println("Step 3: Check Direction");
-                            if(checkDir(objAry_G[temp_x-1][temp_y].getDirection(),temp_x,temp_y,'N')){
+                            if(checkDir(objAry_G[temp_x-1][temp_y].getDirection(),'N')){
                                 possible_D.add('N');
                                 System.out.print("N is marked");
                             }
                         }
                         if(objAry_G[temp_x][temp_y+1].isDrivable()){
                             System.out.println("Step 3: Check Direction");
-                            if(checkDir(objAry_G[temp_x][temp_y+1].getDirection(),temp_x,temp_y,'N')){
+                            if(checkDir(objAry_G[temp_x][temp_y+1].getDirection(),'N')){
                                 possible_D.add('E');
                                 System.out.print("E is marked");
                             }
@@ -555,21 +608,21 @@ public class SimulatorValue extends JFrame implements WindowListener {
                         System.out.println("Step 2: Check Drivable");
                         if(objAry_G[temp_x][temp_y-1].isDrivable()){
                             System.out.println("Step 3: Check Direction");
-                            if(checkDir(objAry_G[temp_x][temp_y-1].getDirection(),temp_x,temp_y,'S')) {
+                            if(checkDir(objAry_G[temp_x][temp_y-1].getDirection(),'S')) {
                                 possible_D.add('W');
                                 System.out.print("W is marked");
                             }
                         }
                         if(objAry_G[temp_x+1][temp_y].isDrivable()){
                             System.out.println("Step 3: Check Direction");
-                            if(checkDir(objAry_G[temp_x+1][temp_y].getDirection(),temp_x,temp_y,'S')){
+                            if(checkDir(objAry_G[temp_x+1][temp_y].getDirection(),'S')){
                                 possible_D.add('S');
                                 System.out.print("S is marked");
                             }
                         }
                         if(objAry_G[temp_x][temp_y+1].isDrivable()){
                             System.out.println("Step 3: Check Direction");
-                            if(checkDir(objAry_G[temp_x][temp_y+1].getDirection(),temp_x,temp_y,'S')){
+                            if(checkDir(objAry_G[temp_x][temp_y+1].getDirection(),'S')){
                                 possible_D.add('E');
                                 System.out.print("E is marked");
                             }

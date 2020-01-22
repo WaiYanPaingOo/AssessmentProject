@@ -4,8 +4,8 @@ public class Vehicle_Block extends Simulator_Obj{
     private int x_location;
     private int y_location;
     private boolean just_rotate = false;
-    public Vehicle_Block(int x_location, int y_location, char[] direction){
-        super("Vehicle Block", "/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/car.png",
+    public Vehicle_Block(int x_location, int y_location, char[] direction, String dir){
+        super("Vehicle Block", dir,
                 false, null, direction, false, null);
         this.x_location = x_location;
         this.y_location = y_location;

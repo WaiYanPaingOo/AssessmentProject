@@ -124,7 +124,7 @@ public class Game_GUI extends SimulatorValue implements ActionListener
             btn_save.setVisible(false);
             btn_exit.setVisible(false);
             btn_pause.setVisible(true);
-            btn_go.setVisible(true);
+            btn_go.setVisible(false);
 
             btn_stop.setVisible(true);
             btn_simulate.setVisible(false);
@@ -158,10 +158,14 @@ public class Game_GUI extends SimulatorValue implements ActionListener
 
         }
         else if (source == btn_pause) {
+            btn_go.setVisible(true);
+            btn_pause.setVisible(false);
             carTimer.stop();
             trafficTimerSwitch(false);
         }
         else if (source == btn_go) {
+            btn_pause.setVisible(true);
+            btn_go.setVisible(false);
             carTimer.start();
             trafficTimerSwitch(true);
         }
