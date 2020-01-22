@@ -37,32 +37,32 @@ public class Road_Obj_1Way {
     private void build_road_structure(){
         this.build_ary_grass();
         if(this.rotation == 'H'){
-            this.objAry[x][y] = new Road_Block(new char[]{'E'});
-            this.objAry[x][y+1] = new Road_Block(new char[]{'E'});
-            this.objAry[x][y+2] = new Road_Block(new char[]{'E'});
-            this.objAry[x][y+3] = new Road_Block(new char[]{'E'});
-            this.objAry[x][y+4] = new Road_Block(new char[]{'E'});
-            this.objAry[x][y+5] = new Road_Block(new char[]{'E'});
-            this.objAry[x+1][y] = new Road_Block(new char[]{'W'});
-            this.objAry[x+1][y+1] = new Road_Block(new char[]{'W'});
-            this.objAry[x+1][y+2] = new Road_Block(new char[]{'W'});
-            this.objAry[x+1][y+3] = new Road_Block(new char[]{'W'});
-            this.objAry[x+1][y+4] = new Road_Block(new char[]{'W'});
-            this.objAry[x+1][y+5] = new Road_Block(new char[]{'W'});
+            this.objAry[x][y] = new Road_Block(new char[]{'E'},"/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/road_L_WE.jpg");
+            this.objAry[x][y+1] = new Road_Block(new char[]{'E'},"/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/road_L_WE.jpg");
+            this.objAry[x][y+2] = new Road_Block(new char[]{'E'},"/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/road_L_WE.jpg");
+            this.objAry[x][y+3] = new Road_Block(new char[]{'E'},"/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/road_L_WE.jpg");
+            this.objAry[x][y+4] = new Road_Block(new char[]{'E'},"/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/road_L_WE.jpg");
+            this.objAry[x][y+5] = new Road_Block(new char[]{'E'},"/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/road_L_WE.jpg");
+            this.objAry[x+1][y] = new Road_Block(new char[]{'W'},"/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/road_R_WE.jpg");
+            this.objAry[x+1][y+1] = new Road_Block(new char[]{'W'},"/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/road_R_WE.jpg");
+            this.objAry[x+1][y+2] = new Road_Block(new char[]{'W'},"/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/road_R_WE.jpg");
+            this.objAry[x+1][y+3] = new Road_Block(new char[]{'W'},"/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/road_R_WE.jpg");
+            this.objAry[x+1][y+4] = new Road_Block(new char[]{'W'},"/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/road_R_WE.jpg");
+            this.objAry[x+1][y+5] = new Road_Block(new char[]{'W'},"/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/road_R_WE.jpg");
         }
         else{
-            this.objAry[x][y] = new Road_Block(new char[]{'N'});
-            this.objAry[x+1][y] = new Road_Block(new char[]{'N'});
-            this.objAry[x+2][y] = new Road_Block(new char[]{'N'});
-            this.objAry[x+3][y] = new Road_Block(new char[]{'N'});
-            this.objAry[x+4][y] = new Road_Block(new char[]{'N'});
-            this.objAry[x+5][y] = new Road_Block(new char[]{'N'});
-            this.objAry[x][y+1] = new Road_Block(new char[]{'S'});
-            this.objAry[x+1][y+1] = new Road_Block(new char[]{'S'});
-            this.objAry[x+2][y+1] = new Road_Block(new char[]{'S'});
-            this.objAry[x+3][y+1] = new Road_Block(new char[]{'S'});
-            this.objAry[x+4][y+1] = new Road_Block(new char[]{'S'});
-            this.objAry[x+5][y+1] = new Road_Block(new char[]{'S'});
+            this.objAry[x][y] = new Road_Block(new char[]{'N'},"/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/road_L_NS.jpg");
+            this.objAry[x+1][y] = new Road_Block(new char[]{'N'},"/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/road_L_NS.jpg");
+            this.objAry[x+2][y] = new Road_Block(new char[]{'N'},"/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/road_L_NS.jpg");
+            this.objAry[x+3][y] = new Road_Block(new char[]{'N'},"/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/road_L_NS.jpg");
+            this.objAry[x+4][y] = new Road_Block(new char[]{'N'},"/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/road_L_NS.jpg");
+            this.objAry[x+5][y] = new Road_Block(new char[]{'N'},"/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/road_L_NS.jpg");
+            this.objAry[x][y+1] = new Road_Block(new char[]{'S'},"/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/road_R_NS.jpg");
+            this.objAry[x+1][y+1] = new Road_Block(new char[]{'S'},"/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/road_R_NS.jpg");
+            this.objAry[x+2][y+1] = new Road_Block(new char[]{'S'},"/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/road_R_NS.jpg");
+            this.objAry[x+3][y+1] = new Road_Block(new char[]{'S'},"/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/road_R_NS.jpg");
+            this.objAry[x+4][y+1] = new Road_Block(new char[]{'S'},"/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/road_R_NS.jpg");
+            this.objAry[x+5][y+1] = new Road_Block(new char[]{'S'},"/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/road_R_NS.jpg");
         }
     }
 }

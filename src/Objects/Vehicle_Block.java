@@ -3,6 +3,7 @@ package Objects;
 public class Vehicle_Block extends Simulator_Obj{
     private int x_location;
     private int y_location;
+    private boolean just_rotate = false;
     public Vehicle_Block(int x_location, int y_location, char[] direction){
         super("Vehicle Block", "/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/car.png",
                 false, null, direction, false, null);
@@ -26,23 +27,35 @@ public class Vehicle_Block extends Simulator_Obj{
         this.y_location = y_location;
     }
 
+    public boolean isJust_rotate() {
+        return just_rotate;
+    }
+
+    public void setJust_rotate(boolean just_rotate) {
+        this.just_rotate = just_rotate;
+    }
+
     public void drive()
     {
         if(this.getDirection()[0] == 'E')
         {
+            this.setPic_location("/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/car_T.png");
             this.y_location++;
         }
         else if(this.getDirection()[0] == 'W')
         {
+            this.setPic_location("/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/car_W.png");
             this.y_location--;
         }
         else if(this.getDirection()[0] == 'N')
         {
-            this.x_location++;
+            this.setPic_location("/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/car_N.png");
+            this.x_location--;
         }
         else if(this.getDirection()[0] == 'S')
         {
-            this.y_location--;
+            this.setPic_location("/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/car_S.png");
+            this.x_location++;
         }
     }
 }

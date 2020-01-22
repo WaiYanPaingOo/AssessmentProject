@@ -134,6 +134,7 @@ public class Game_GUI extends SimulatorValue implements ActionListener
             btn_road3.setVisible(false);
 
             carTimer.start();
+            trafficTimer.start();
             trafficTimerSwitch(true);
         }
         else if (source == btn_stop) {
@@ -150,6 +151,7 @@ public class Game_GUI extends SimulatorValue implements ActionListener
             btn_road3.setVisible(true);
 
             carTimer.stop();
+            trafficTimer.stop();
             trafficTimerSwitch(false);
             clearCars();
             //
