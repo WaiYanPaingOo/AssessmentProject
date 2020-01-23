@@ -35,6 +35,16 @@ public class Road_Obj_3Way {
     public void rotate(String rotation) {
         this.rotation = rotation;
     }
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+    public String getRotation(){
+        return this.rotation;
+    }
 
     private void build_ary_grass()
     {

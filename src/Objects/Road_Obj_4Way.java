@@ -28,6 +28,13 @@ public class Road_Obj_4Way {
     public Simulator_Obj[][] get_objAry(){
         return this.objAry;
     }
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
     private void build_ary_grass()
     {
         try

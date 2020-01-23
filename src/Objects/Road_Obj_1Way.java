@@ -28,6 +28,15 @@ public class Road_Obj_1Way {
     public String getRotation(){
         return this.rotation;
     }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
     public Simulator_Obj[][] get_objAry(){
         return this.objAry;
     }

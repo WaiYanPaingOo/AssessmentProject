@@ -3,13 +3,18 @@ package GUI;
 import Objects.*;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 public class SimulatorValue extends JFrame implements WindowListener {
     // for map grid
@@ -35,10 +40,7 @@ public class SimulatorValue extends JFrame implements WindowListener {
 
     int roadXVt1 = 0, roadYVt1 = 8;
 
-    int carX =8, carY=0;
-    int carX2 = 0, carY2 = 9;
-
-    int carSpeed = 100;
+    int carSpeed = 10;
     int trafficLightSpeed = 4000;
 
 
@@ -51,9 +53,9 @@ public class SimulatorValue extends JFrame implements WindowListener {
 
     private ArrayList<Road_Obj_4Way> roadObj4Ways_traffic = new ArrayList<>();
     private ArrayList<Road_Obj_3Way> roadObj3Ways_traffic = new ArrayList<>();
+    private ArrayList<Road_Obj_1Way> roadObj1Ways_traffic = new ArrayList<>();
 
     private ArrayList<Vehicle_Block> vehicleAry = new ArrayList<>();
-    private ArrayList<TrafficLight_Obj> trafficAry= new ArrayList<>();
     //protected int available_id = 0;
 
     Color paint = new Color(122, 145, 21);
@@ -280,7 +282,7 @@ public class SimulatorValue extends JFrame implements WindowListener {
             roadObj3Ways_traffic.add(current_road_3);
         }
         else if(type == 1){
-
+            roadObj1Ways_traffic.add(current_road_1);
         }
 
 
@@ -367,6 +369,79 @@ public class SimulatorValue extends JFrame implements WindowListener {
         }
         roadObj4Ways_traffic.clear();
         roadObj3Ways_traffic.clear();
+        roadObj1Ways_traffic.clear();
+    }
+    void saveMap() throws IOException {
+        String filename = JOptionPane.showInputDialog("Enter File Name");
+        FileWriter csvWriter = new FileWriter(filename + ".csv");
+        for(int i = 0; i < roadObj1Ways_traffic.size(); i++){
+            csvWriter.append("1");
+            csvWriter.append(",");
+            csvWriter.append(Integer.toString(roadObj1Ways_traffic.get(i).getX()));
+            csvWriter.append(",");
+            csvWriter.append(Integer.toString(roadObj1Ways_traffic.get(i).getY()));
+            csvWriter.append(",");
+            csvWriter.append(roadObj1Ways_traffic.get(i).getRotation());
+            csvWriter.append("\n");
+        }
+        for(int i = 0; i < roadObj4Ways_traffic.size(); i++){
+            csvWriter.append("4");
+            csvWriter.append(",");
+            csvWriter.append(Integer.toString(roadObj4Ways_traffic.get(i).getX()));
+            csvWriter.append(",");
+            csvWriter.append(Integer.toString(roadObj4Ways_traffic.get(i).getY()));
+            csvWriter.append(",");
+            csvWriter.append("H");
+            csvWriter.append("\n");
+        }
+        for(int i = 0; i < roadObj3Ways_traffic.size(); i++){
+            csvWriter.append("3");
+            csvWriter.append(",");
+            csvWriter.append(Integer.toString(roadObj3Ways_traffic.get(i).getX()));
+            csvWriter.append(",");
+            csvWriter.append(Integer.toString(roadObj3Ways_traffic.get(i).getY()));
+            csvWriter.append(",");
+            csvWriter.append(roadObj3Ways_traffic.get(i).getRotation());
+            csvWriter.append("\n");
+        }
+        csvWriter.flush();
+        csvWriter.close();
+        JOptionPane.showMessageDialog(null, "File Saved As " + filename);
+
+    }
+    void loadMap(){
+        JFileChooser chooser = new JFileChooser("/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment");
+        int returnVal = chooser.showOpenDialog(null);
+        if(returnVal == JFileChooser.APPROVE_OPTION) {
+            System.out.println("You chose to open this file: " +
+                    chooser.getSelectedFile().getAbsolutePath());
+
+            File f=new File(chooser.getSelectedFile().getAbsolutePath());
+            try{
+                Scanner sc=new Scanner(f);
+                System.out.println(sc.hasNextLine());
+                int count = 0;
+                while (sc.hasNextLine()) {
+                    count++;
+                    sc.nextLine();
+                }
+                Scanner sc2=new Scanner(f);
+                clearMap();
+                for(int i = 0; i < count; i++){
+                    String str=sc2.nextLine();
+                    String[] res = str.split(",");
+                    addRoad(Integer.parseInt(res[1]), Integer.parseInt(res[2]), Integer.parseInt(res[0]), res[3]);
+                }
+
+
+
+            }catch(Exception e)
+            {
+                System.out.print(e.toString());
+            }
+
+
+        }
     }
     void clearCars()
     {
@@ -903,6 +978,7 @@ public class SimulatorValue extends JFrame implements WindowListener {
         else if(ways == 1)
         {
             Road_Obj_1Way new_road_comp = new Road_Obj_1Way(ROW, COL,x, y, rot);
+            roadObj1Ways_traffic.add(new_road_comp);
             temp_obj = new_road_comp.get_objAry();
             int i = 0;
             while (i < ROW)

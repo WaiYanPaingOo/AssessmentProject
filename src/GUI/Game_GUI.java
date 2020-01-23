@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 
 public class Game_GUI extends SimulatorValue implements ActionListener, KeyListener
 {
@@ -94,21 +95,6 @@ public class Game_GUI extends SimulatorValue implements ActionListener, KeyListe
 
         setVisible(true);
         pack();
-
-        addRoad(roadX, roadY, 1, "H");
-        addRoad(roadX2, roadY2, 4, "H");
-        addRoad(roadX3, roadY3, 1, "H");
-        addRoad(roadX4, roadY4, 3, "WE");
-        addRoad(roadXVt1, roadYVt1,1,"V");
-        addRoad(roadXVt1, roadYVt1+12,1,"V");
-        addRoad(roadXVb1, roadYVb1,1,"V");
-        addRoad(roadXVb2, roadYVb2,1,"V");
-
-        addRoad(roadXVb1, roadYVb1+12,1,"V");
-        addRoad(roadXVb2, roadYVb2+12,1,"V");
-
-        //addRoad(roadX, roadY, 10, 'E', true);
-        //addRoad(roadX2, roadY2, 10, 'E',false);
     }
 
     @Override
@@ -117,10 +103,14 @@ public class Game_GUI extends SimulatorValue implements ActionListener, KeyListe
         if (source == btn_reset) {
             clearMap();
         } else if (source == btn_load) {
-            //
+            loadMap();
         }
         else if (source == btn_save) {
-            //
+            try {
+                saveMap();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
         else if (source == btn_exit) {
            new Menu_GUI();
