@@ -1,9 +1,5 @@
 package Objects;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 public class Road_Obj_4Way {
     private int ROW, COL,x, y;
     private Simulator_Obj[][] objAry;

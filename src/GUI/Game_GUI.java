@@ -4,8 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-public class Game_GUI extends SimulatorValue implements ActionListener
+public class Game_GUI extends SimulatorValue implements ActionListener, KeyListener
 {
     private JButton btn_reset = new JButton("Reset");
     private JButton btn_load = new JButton("Load");
@@ -65,6 +67,8 @@ public class Game_GUI extends SimulatorValue implements ActionListener
         add(p_btn, BorderLayout.NORTH);
         showMap();
         panel1.setBackground(Color.black);
+        panel1.addKeyListener(this);
+        panel1.setFocusable(false);
         add(panel1, BorderLayout.CENTER);
 
 
@@ -87,17 +91,21 @@ public class Game_GUI extends SimulatorValue implements ActionListener
 
         addWindowListener(this);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setFocusable(true);
+
         setVisible(true);
         pack();
 
-        addRoad(roadX, roadY, 1, 'H');
-        addRoad(roadX2, roadY2, 4, 'H');
-        addRoad(roadX3, roadY3, 1, 'H');
-        addRoad(roadX4, roadY4, 1, 'H');
-        addRoad(roadXVt1, roadYVt1,1,'V');
-        addRoad(roadXVb1, roadYVb1,1,'V');
-        addRoad(roadXVb2, roadYVb2,1,'V');
+        addRoad(roadX, roadY, 1, "H");
+        addRoad(roadX2, roadY2, 4, "H");
+        addRoad(roadX3, roadY3, 1, "H");
+        addRoad(roadX4, roadY4, 3, "WE");
+        addRoad(roadXVt1, roadYVt1,1,"V");
+        addRoad(roadXVt1, roadYVt1+12,1,"V");
+        addRoad(roadXVb1, roadYVb1,1,"V");
+        addRoad(roadXVb2, roadYVb2,1,"V");
+
+        addRoad(roadXVb1, roadYVb1+12,1,"V");
+        addRoad(roadXVb2, roadYVb2+12,1,"V");
 
         //addRoad(roadX, roadY, 10, 'E', true);
         //addRoad(roadX2, roadY2, 10, 'E',false);
@@ -107,7 +115,7 @@ public class Game_GUI extends SimulatorValue implements ActionListener
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
         if (source == btn_reset) {
-            showMap();
+            clearMap();
         } else if (source == btn_load) {
             //
         }
@@ -154,8 +162,6 @@ public class Game_GUI extends SimulatorValue implements ActionListener
             trafficTimer.stop();
             trafficTimerSwitch(false);
             clearCars();
-            //
-
         }
         else if (source == btn_pause) {
             btn_go.setVisible(true);
@@ -170,14 +176,103 @@ public class Game_GUI extends SimulatorValue implements ActionListener
             trafficTimerSwitch(true);
         }
         else if (source == btn_road1) {
-           //
+            btn_reset.setEnabled(false);
+            btn_load.setEnabled(false);
+            btn_save.setEnabled(false);
+            btn_simulate.setEnabled(false);
+            btn_road1.setEnabled(false);
+            btn_road2.setEnabled(false);
+            btn_road3.setEnabled(false);
+
+            panel1.setFocusable(true);
+            panel1.requestFocusInWindow();
+
+            showEditRoad(default_road_spawn_X,default_road_spawn_Y,1, "H");
         }
         else if (source == btn_road2) {
-            //
+            btn_reset.setEnabled(false);
+            btn_load.setEnabled(false);
+            btn_save.setEnabled(false);
+            btn_simulate.setEnabled(false);
+            btn_road1.setEnabled(false);
+            btn_road2.setEnabled(false);
+            btn_road3.setEnabled(false);
+
+            panel1.setFocusable(true);
+            panel1.requestFocusInWindow();
+
+            showEditRoad(default_road_spawn_X,default_road_spawn_Y,4, "H");
         }
         else if (source == btn_road3) {
-            //
+            btn_reset.setEnabled(false);
+            btn_load.setEnabled(false);
+            btn_save.setEnabled(false);
+            btn_simulate.setEnabled(false);
+            btn_road1.setEnabled(false);
+            btn_road2.setEnabled(false);
+            btn_road3.setEnabled(false);
+
+            panel1.setFocusable(true);
+            panel1.requestFocusInWindow();
+
+            showEditRoad(default_road_spawn_X,default_road_spawn_Y,3, "WE");
         }
+
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        char key = e.getKeyChar();
+        System.out.println("code" + e.getExtendedKeyCode());
+        if(key == 'w'){
+            moveEditRoad(current_edit_road_type,'N',current_edit_road_rotation);
+        }
+        else if(key == 'd'){
+            moveEditRoad(current_edit_road_type,'E',current_edit_road_rotation);
+        }
+        else if(key == 's'){
+            moveEditRoad(current_edit_road_type,'S',current_edit_road_rotation);
+        }
+        else if(key == 'a'){
+            moveEditRoad(current_edit_road_type,'W',current_edit_road_rotation);
+        }
+        else if(e.getExtendedKeyCode() == 32){
+            undoEditing();
+            rotateEditingObj(current_edit_road_type);
+        }
+        else if(key == 'r'){
+            btn_reset.setEnabled(true);
+            btn_load.setEnabled(true);
+            btn_save.setEnabled(true);
+            btn_simulate.setEnabled(true);
+            btn_road1.setEnabled(true);
+            btn_road2.setEnabled(true);
+            btn_road3.setEnabled(true);
+            panel1.setFocusable(false);
+
+            undoEditing();
+        }
+        else if(e.getExtendedKeyCode() == 10){
+            btn_reset.setEnabled(true);
+            btn_load.setEnabled(true);
+            btn_save.setEnabled(true);
+            btn_simulate.setEnabled(true);
+            btn_road1.setEnabled(true);
+            btn_road2.setEnabled(true);
+            btn_road3.setEnabled(true);
+            panel1.setFocusable(false);
+
+            endEditing(current_edit_road_type);
+        }
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
 
     }
 }

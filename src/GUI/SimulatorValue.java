@@ -12,6 +12,18 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class SimulatorValue extends JFrame implements WindowListener {
+    // for map grid
+    private int ROW = 24, COL = 24, GAP = 0, ROADSPAWNX = 11, ROADSPAWNY = 11;
+    //Default Road Spawning Point
+    int default_road_spawn_X = ROADSPAWNX;
+    int default_road_spawn_Y = ROADSPAWNY;
+
+    int current_edit_road_type;
+    String current_edit_road_rotation;
+    Road_Obj_4Way current_road_4;
+    Road_Obj_3Way current_road_3;
+    Road_Obj_1Way current_road_1;
+
     //test values
     int roadX=8, roadY=0;
     int roadX2=8, roadY2=6;
@@ -28,15 +40,18 @@ public class SimulatorValue extends JFrame implements WindowListener {
 
     int carSpeed = 100;
     int trafficLightSpeed = 4000;
-    // for map grid
-    private int ROW = 24, COL = 24, GAP = 0;
+
 
     JPanel panel1 = new JPanel(new GridLayout(ROW, COL, GAP, GAP));//game panel
     private JLabel[][] ground_G = new JLabel[ROW][COL];//game array
     private Simulator_Obj[][] objAry_G = new Simulator_Obj[ROW][COL];
+
+    public Simulator_Obj[][] current_edit_obj;
     private Random r = new Random();
 
     private ArrayList<Road_Obj_4Way> roadObj4Ways_traffic = new ArrayList<>();
+    private ArrayList<Road_Obj_3Way> roadObj3Ways_traffic = new ArrayList<>();
+
     private ArrayList<Vehicle_Block> vehicleAry = new ArrayList<>();
     private ArrayList<TrafficLight_Obj> trafficAry= new ArrayList<>();
     //protected int available_id = 0;
@@ -93,42 +108,46 @@ public class SimulatorValue extends JFrame implements WindowListener {
                             }
                         }
                     }
-                    Random temp_r = new Random();
-                    int block = temp_r.nextInt(possible_X.size());
-                    int temp_X = possible_X.get(block);
-                    int temp_Y = possible_Y.get(block);
-                    char temp_C = possible_C.get(block);
-                    spawnCar(temp_X, temp_Y,temp_C);
-                    showCars();
+                    if(possible_X.size() > 0){
+                        Random temp_r = new Random();
+                        int block = temp_r.nextInt(possible_X.size());
+                        int temp_X = possible_X.get(block);
+                        int temp_Y = possible_Y.get(block);
+                        char temp_C = possible_C.get(block);
+                        spawnCar(temp_X, temp_Y,temp_C);
+                        showCars();
+                    }
+
                 }
             }
         }
     });
     Timer trafficTimer = new Timer(trafficLightSpeed, new ActionListener(){
         public void actionPerformed(ActionEvent e) {
-            int loop_size = roadObj4Ways_traffic.size();
-            for(int i = 0; i < loop_size; i++){
-                System.out.println(" outer loop");
+            int loop_size_4 = roadObj4Ways_traffic.size();
+            int loop_size_3 = roadObj3Ways_traffic.size();
+            for(int i = 0; i < loop_size_4; i++){
                 roadObj4Ways_traffic.get(i).changeTrafficLight();
                 TrafficLight_Obj[] temp_ary = roadObj4Ways_traffic.get(i).getTf_ary();
                 for(int j = 0; j < temp_ary.length; j++){
+                    int temp_x = temp_ary[j].getX_location();
+                    int temp_y = temp_ary[j].getY_location();
+                    ground_G[temp_x][temp_y].setIcon(new ImageIcon(objAry_G[temp_x][temp_y].getPic_location()));
+                }
+            }
+            for(int i = 0; i < loop_size_3; i++){
+                System.out.println(" outer loop");
+                roadObj3Ways_traffic.get(i).changeTrafficLight();
+                TrafficLight_Obj[] temp_ary = roadObj3Ways_traffic.get(i).getTf_ary();
+                for(int j = 0; j < temp_ary.length; j++){
                     System.out.println("inner loop");
                     System.out.println("j - "+ j);
-                    int temp_x = temp_ary[j].getY_location();
-                    int temp_y = temp_ary[j].getX_location();
+                    int temp_x = temp_ary[j].getX_location();
+                    int temp_y = temp_ary[j].getY_location();
                     System.out.println("x - "+ temp_x + " y - "+ temp_y);
                     ground_G[temp_x][temp_y].setIcon(new ImageIcon(objAry_G[temp_x][temp_y].getPic_location()));
                 }
             }
-//            int loop_size = trafficAry.size();
-//
-//            for(int i = 0; i < loop_size; i++)
-//            {
-//                int temp_x = trafficAry.get(i).getX_location();
-//                int temp_y = trafficAry.get(i).getY_location();
-//                trafficAry.get(i).set_is_red();
-//                ground_G[temp_x][temp_y].setIcon(new ImageIcon(objAry_G[temp_x][temp_y].getPic_location()));
-//            }
         }
     });
 
@@ -158,6 +177,148 @@ public class SimulatorValue extends JFrame implements WindowListener {
             dir = "/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/car_S.png";
         }
         vehicleAry.add(new Vehicle_Block(x, y, new char[]{d},dir));
+    }
+    //editing
+    void showEditRoad(int X, int Y,int type, String dir){
+        current_edit_road_type = type;
+        current_edit_road_rotation = dir;
+        if(type == 1){
+            Road_Obj_1Way new_road_comp = new Road_Obj_1Way(ROW, COL,X, Y, dir);
+            current_road_1 = new_road_comp;
+            current_edit_obj = new_road_comp.get_objAry();
+        }
+        else if(type == 4){
+            Road_Obj_4Way new_road_comp = new Road_Obj_4Way(ROW, COL,X, Y);
+            current_road_4 = new_road_comp;
+            current_edit_obj = new_road_comp.get_objAry();
+        }
+        else if(type == 3){
+            Road_Obj_3Way new_road_comp = new Road_Obj_3Way(ROW, COL,X, Y, dir);
+            current_road_3 = new_road_comp;
+            current_edit_obj = new_road_comp.get_objAry();
+        }
+        int i = 0;
+        while (i < ROW)
+        {
+            for (int j = 0; j < COL; j++)
+            {
+                if(current_edit_obj[i][j].getType().equals("Grass Block"))
+                {
+
+                }
+                else{
+                    //System.out.println("i value " + i + " j value" + j + " type " + temp_obj[i][j].getType());
+                    underObjectTemp = objAry_G[i][j];
+                    objAry_G[i][j] = current_edit_obj[i][j];
+                    objAry_G[i][j].setUnder(underObjectTemp);
+                    ground_G[i][j].setIcon(new ImageIcon(objAry_G[i][j].getPic_location()));
+                }
+
+            }
+            i++;
+        }
+    }
+    void rotateEditingObj(int type){
+        if(type == 1){
+            current_road_1.rotate();
+            current_edit_obj = current_road_1.get_objAry();
+            current_edit_road_rotation = current_road_1.getRotation();
+        }
+        else if(type == 3){
+
+        }
+        int i = 0;
+        while (i < ROW)
+        {
+            for (int j = 0; j < COL; j++)
+            {
+                if(current_edit_obj[i][j].getType().equals("Grass Block"))
+                {
+
+                }
+                else{
+                    //System.out.println("i value " + i + " j value" + j + " type " + temp_obj[i][j].getType());
+                    underObjectTemp = objAry_G[i][j];
+                    objAry_G[i][j] = current_edit_obj[i][j];
+                    objAry_G[i][j].setUnder(underObjectTemp);
+                    ground_G[i][j].setIcon(new ImageIcon(objAry_G[i][j].getPic_location()));
+                }
+
+            }
+            i++;
+        }
+    }
+
+    void undoEditing(){
+        int i = 0;
+        while (i < ROW)
+        {
+            for (int j = 0; j < COL; j++)
+            {
+                if(current_edit_obj[i][j].getType().equals("Grass Block"))
+                {
+
+                }
+                else{
+                    //System.out.println("i value " + i + " j value" + j + " type " + temp_obj[i][j].getType());
+                    underObjectTemp = objAry_G[i][j].getUnder();
+                    objAry_G[i][j] = underObjectTemp;
+                    ground_G[i][j].setIcon(new ImageIcon(objAry_G[i][j].getPic_location()));
+                }
+
+            }
+            i++;
+        }
+    }
+    void endEditing(int type){
+        default_road_spawn_X = ROADSPAWNX;
+        default_road_spawn_Y = ROADSPAWNY;
+        if(type == 4){
+            roadObj4Ways_traffic.add(current_road_4);
+        }
+        else if(type == 3){
+            roadObj3Ways_traffic.add(current_road_3);
+        }
+        else if(type == 1){
+
+        }
+
+
+    }
+
+    void moveEditRoad(int type, char dir, String rot){
+            if(dir == 'N'){
+                default_road_spawn_X = default_road_spawn_X - 1;
+            }
+            else if(dir == 'S'){
+                default_road_spawn_X = default_road_spawn_X + 1;
+            }
+            else if(dir == 'W'){
+                default_road_spawn_Y = default_road_spawn_Y - 1;
+            }
+            else if(dir == 'E'){
+                default_road_spawn_Y = default_road_spawn_Y + 1;
+            }
+            int i = 0;
+            while (i < ROW)
+            {
+                for (int j = 0; j < COL; j++)
+                {
+                    if(current_edit_obj[i][j].getType().equals("Grass Block"))
+                    {
+
+                    }
+                    else{
+                        //System.out.println("i value " + i + " j value" + j + " type " + temp_obj[i][j].getType());
+                        underObjectTemp = objAry_G[i][j].getUnder();
+                        objAry_G[i][j] = underObjectTemp;
+                        ground_G[i][j].setIcon(new ImageIcon(objAry_G[i][j].getPic_location()));
+                    }
+
+                }
+                i++;
+            }
+            showEditRoad(default_road_spawn_X,default_road_spawn_Y, type, rot);
     }
 
     //map
@@ -191,6 +352,21 @@ public class SimulatorValue extends JFrame implements WindowListener {
             JOptionPane.showMessageDialog(null, "Map Generate Error");
             dispose();
         }
+    }
+    void clearMap()
+    {
+        int i = 0;
+        while (i < ROW)
+        {
+            for (int j = 0; j < COL; j++)
+            {
+                objAry_G[i][j] = new Grass_Block();
+                ground_G[i][j].setIcon(new ImageIcon(objAry_G[i][j].getPic_location()));
+            }
+            i++;
+        }
+        roadObj4Ways_traffic.clear();
+        roadObj3Ways_traffic.clear();
     }
     void clearCars()
     {
@@ -388,6 +564,14 @@ public class SimulatorValue extends JFrame implements WindowListener {
                                     System.out.println("Random number  "+ nextStep);
                                     System.out.println("Random Direction "+ possible_D.get(nextStep));
                                     System.out.println("Step 7: Change Car Direction ");
+                                    if(possible_D.get(nextStep) == vehicleAry.get(i).getDirection()[0]){
+                                        this.vehicleAry.get(i).setJust_rotate(false);
+                                        System.out.println("Straight");
+                                    }
+                                    else{
+                                        this.vehicleAry.get(i).setJust_rotate(true);
+                                        System.out.println("Just Rotate");
+                                    }
                                     vehicleAry.get(i).setDirection(new char[]{possible_D.get(nextStep)});
                                     System.out.println("Step 8: Drive ");
                                     vehicleAry.get(i).drive();
@@ -688,7 +872,7 @@ public class SimulatorValue extends JFrame implements WindowListener {
         }
     }
 
-    void addRoad(int x, int y, int ways, char rot){
+    void addRoad(int x, int y, int ways, String rot){
         Simulator_Obj[][] temp_obj;
         if(ways == 4)
         {
@@ -743,7 +927,29 @@ public class SimulatorValue extends JFrame implements WindowListener {
         }
         else if(ways == 3)
         {
+            Road_Obj_3Way new_road_comp = new Road_Obj_3Way(ROW, COL,x, y, rot);
+            roadObj3Ways_traffic.add(new_road_comp);
+            temp_obj = new_road_comp.get_objAry();
+            int i = 0;
+            while (i < ROW)
+            {
+                for (int j = 0; j < COL; j++)
+                {
+                    if(temp_obj[i][j].getType().equals("Grass Block"))
+                    {
 
+                    }
+                    else{
+                        //System.out.println("i value " + i + " j value" + j + " type " + temp_obj[i][j].getType());
+                        underObjectTemp = objAry_G[i][j];
+                        objAry_G[i][j] = temp_obj[i][j];
+                        objAry_G[i][j].setUnder(underObjectTemp);
+                        ground_G[i][j].setIcon(new ImageIcon(objAry_G[i][j].getPic_location()));
+                    }
+
+                }
+                i++;
+            }
         }
     }
 

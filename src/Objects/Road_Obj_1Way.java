@@ -2,10 +2,10 @@ package Objects;
 
 public class Road_Obj_1Way {
     private int ROW, COL,x, y;
-    private char rotation;
+    private String rotation;
     private Simulator_Obj[][] objAry;
 
-    public Road_Obj_1Way(int row, int col,int X , int Y, char rot) {
+    public Road_Obj_1Way(int row, int col,int X , int Y, String rot) {
         this.x = X;
         this.y = Y;
         this.rotation = rot;
@@ -13,6 +13,20 @@ public class Road_Obj_1Way {
         this.COL = col;
         objAry = new Simulator_Obj[ROW][COL];
         this.build_road_structure();
+    }
+    public void rotate(){
+        if(this.rotation.equals("H"))
+        {
+            this.rotation = "N";
+        }
+        else
+        {
+            this.rotation = "H";
+        }
+        this.build_road_structure();
+    }
+    public String getRotation(){
+        return this.rotation;
     }
     public Simulator_Obj[][] get_objAry(){
         return this.objAry;
@@ -36,7 +50,7 @@ public class Road_Obj_1Way {
     }
     private void build_road_structure(){
         this.build_ary_grass();
-        if(this.rotation == 'H'){
+        if(this.rotation.equals("H")){
             this.objAry[x][y] = new Road_Block(new char[]{'E'},"/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/road_L_WE.jpg");
             this.objAry[x][y+1] = new Road_Block(new char[]{'E'},"/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/road_L_WE.jpg");
             this.objAry[x][y+2] = new Road_Block(new char[]{'E'},"/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/road_L_WE.jpg");
