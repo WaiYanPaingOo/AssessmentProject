@@ -22,33 +22,39 @@ public class SimulatorValue extends JFrame implements WindowListener {
     //Default Road Spawning Point
     int default_road_spawn_X = ROADSPAWNX;
     int default_road_spawn_Y = ROADSPAWNY;
+    int carSpeed = 130;
+    private int trafficLightSpeed = 4000;
 
+    JPanel panel1 = new JPanel(new GridLayout(ROW, COL, GAP, GAP));//game panel
+
+    private JLabel[][] ground_G = new JLabel[ROW][COL];//game array
+    private Simulator_Obj[][] objAry_G = new Simulator_Obj[ROW][COL];
+    Simulator_Obj underObjectTemp;
+
+    //Editing Map Values
     int current_edit_road_type;
     String current_edit_road_rotation;
     private Road_Obj_4Way current_road_4;
     private Road_Obj_3Way current_road_3;
     private Road_Obj_1Way current_road_1;
 
-    int carSpeed = 130;
-    private int trafficLightSpeed = 4000;
-
-
-    JPanel panel1 = new JPanel(new GridLayout(ROW, COL, GAP, GAP));//game panel
-    private JLabel[][] ground_G = new JLabel[ROW][COL];//game array
-    private Simulator_Obj[][] objAry_G = new Simulator_Obj[ROW][COL];
-
+    //temp array to accept Objects from road objects
     private Simulator_Obj[][] current_edit_obj;
+    //random
     private Random r = new Random();
-
+    //array lists to store road objects to save in csv file
     private ArrayList<Road_Obj_4Way> roadObj4Ways_traffic = new ArrayList<>();
     private ArrayList<Road_Obj_3Way> roadObj3Ways_traffic = new ArrayList<>();
     private ArrayList<Road_Obj_1Way> roadObj1Ways_traffic = new ArrayList<>();
 
+    //store vehicles on the map
     private ArrayList<Vehicle_Block> vehicleAry = new ArrayList<>();
 
+    //paint for buttons
     Color paint = new Color(122, 145, 21);
+    //paint for panel
+    Color paint_background = new Color(70, 70, 72);
 
-    Simulator_Obj underObjectTemp;
 
 
     //timers

@@ -84,7 +84,7 @@ public class Game_GUI extends SimulatorValue implements ActionListener, KeyListe
 
         add(p_btn, BorderLayout.NORTH);
         showMap();
-        panel1.setBackground(Color.black);
+        panel1.setBackground(paint_background);
         panel1.addKeyListener(this);
         panel1.setFocusable(false);
         add(panel1, BorderLayout.CENTER);
