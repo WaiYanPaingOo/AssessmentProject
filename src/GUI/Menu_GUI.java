@@ -14,9 +14,7 @@ public class Menu_GUI extends SimulatorValue implements ActionListener {
     public Menu_GUI()
     {
         this.setLocation(600, 350);
-
         setLayout(new BorderLayout());//Whole layout
-
         //panel1.setBackground()
         JPanel p_title = new JPanel(new BorderLayout());
         p_title.add(lbl_title);
@@ -25,7 +23,6 @@ public class Menu_GUI extends SimulatorValue implements ActionListener {
 
         //button panel/
         JPanel panel2 = new JPanel(new FlowLayout(FlowLayout.CENTER));
-
         JPanel p_btn = new JPanel(new GridLayout(2,1));
         btn_play.addActionListener(this);
         btn_exit.addActionListener(this);
@@ -40,14 +37,12 @@ public class Menu_GUI extends SimulatorValue implements ActionListener {
 
         add(panel2, BorderLayout.CENTER);
 
-
         addWindowListener(this);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setFocusable(true);
         setVisible(true);
         pack();
     }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
