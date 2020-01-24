@@ -25,30 +25,19 @@ public class SimulatorValue extends JFrame implements WindowListener {
 
     int current_edit_road_type;
     String current_edit_road_rotation;
-    Road_Obj_4Way current_road_4;
-    Road_Obj_3Way current_road_3;
-    Road_Obj_1Way current_road_1;
+    private Road_Obj_4Way current_road_4;
+    private Road_Obj_3Way current_road_3;
+    private Road_Obj_1Way current_road_1;
 
-    //test values
-    int roadX=8, roadY=0;
-    int roadX2=8, roadY2=6;
-    int roadX3=8, roadY3=12;
-    int roadX4=8, roadY4=18;
-
-    int roadXVb1 = 12, roadYVb1 = 8;
-    int roadXVb2 = 18, roadYVb2 = 8;
-
-    int roadXVt1 = 0, roadYVt1 = 8;
-
-    int carSpeed = 10;
-    int trafficLightSpeed = 4000;
+    int carSpeed = 130;
+    private int trafficLightSpeed = 4000;
 
 
     JPanel panel1 = new JPanel(new GridLayout(ROW, COL, GAP, GAP));//game panel
     private JLabel[][] ground_G = new JLabel[ROW][COL];//game array
     private Simulator_Obj[][] objAry_G = new Simulator_Obj[ROW][COL];
 
-    public Simulator_Obj[][] current_edit_obj;
+    private Simulator_Obj[][] current_edit_obj;
     private Random r = new Random();
 
     private ArrayList<Road_Obj_4Way> roadObj4Ways_traffic = new ArrayList<>();
@@ -56,7 +45,6 @@ public class SimulatorValue extends JFrame implements WindowListener {
     private ArrayList<Road_Obj_1Way> roadObj1Ways_traffic = new ArrayList<>();
 
     private ArrayList<Vehicle_Block> vehicleAry = new ArrayList<>();
-    //protected int available_id = 0;
 
     Color paint = new Color(122, 145, 21);
 
@@ -227,7 +215,9 @@ public class SimulatorValue extends JFrame implements WindowListener {
             current_edit_road_rotation = current_road_1.getRotation();
         }
         else if(type == 3){
-
+            current_road_3.rotate();
+            current_edit_obj = current_road_3.get_objAry();
+            current_edit_road_rotation = current_road_3.getRotation();
         }
         int i = 0;
         while (i < ROW)
@@ -499,78 +489,6 @@ public class SimulatorValue extends JFrame implements WindowListener {
                     ground_G[temp_x][temp_y].setIcon(new ImageIcon(objAry_G[temp_x][temp_y].getPic_location()));
                 }
             }
-
-
-
-//            if(temp_d == 'E')
-//            {
-//                if(temp_y >= COL)
-//                {
-//                    vehicleAry.remove(i);
-//                    //System.out.println("status" + vehicleAry);
-//                }
-//                else{
-//                    if(!objAry_G[temp_x][temp_y].getType().equals("Vehicle Block"))
-//                    {
-//                        underObjectTemp =  objAry_G[temp_x][temp_y];
-//                        objAry_G[temp_x][temp_y] = temp[i];
-//                        objAry_G[temp_x][temp_y].setUnder(underObjectTemp);
-//                        ground_G[temp_x][temp_y].setIcon(new ImageIcon(objAry_G[temp_x][temp_y].getPic_location()));
-//                    }
-//                }
-//            }
-//            else if(temp_d == 'N')
-//            {
-//                if(temp_x < 0)
-//                {
-//                    System.out.println("status temp_x -" + temp_x + "Remove ___________________________ " + vehicleAry.size());
-//                    vehicleAry.remove(i);
-//                    System.out.println("status temp_x -" + temp_x + "Remove ___________________________"+ vehicleAry.size());
-//                }
-//                else{
-//                    if(!objAry_G[temp_x][temp_y].getType().equals("Vehicle Block"))
-//                    {
-//                        underObjectTemp =  objAry_G[temp_x][temp_y];
-//                        objAry_G[temp_x][temp_y] = temp[i];
-//                        objAry_G[temp_x][temp_y].setUnder(underObjectTemp);
-//                        ground_G[temp_x][temp_y].setIcon(new ImageIcon(objAry_G[temp_x][temp_y].getPic_location()));
-//                    }
-//                }
-//            }
-//            else if(temp_d == 'S')
-//            {
-//                if(temp_x >= ROW)
-//                {
-//                    vehicleAry.remove(i);
-//                    //System.out.println("status" + vehicleAry);
-//                }
-//                else{
-//                    if(!objAry_G[temp_x][temp_y].getType().equals("Vehicle Block"))
-//                    {
-//                        underObjectTemp =  objAry_G[temp_x][temp_y];
-//                        objAry_G[temp_x][temp_y] = temp[i];
-//                        objAry_G[temp_x][temp_y].setUnder(underObjectTemp);
-//                        ground_G[temp_x][temp_y].setIcon(new ImageIcon(objAry_G[temp_x][temp_y].getPic_location()));
-//                    }
-//                }
-//            }
-//            else if(temp_d == 'W')
-//            {
-//                if(temp_y < 0)
-//                {
-//                    vehicleAry.remove(i);
-//                    //System.out.println("status" + vehicleAry);
-//                }
-//                else{
-//                    if(!objAry_G[temp_x][temp_y].getType().equals("Vehicle Block"))
-//                    {
-//                        underObjectTemp =  objAry_G[temp_x][temp_y];
-//                        objAry_G[temp_x][temp_y] = temp[i];
-//                        objAry_G[temp_x][temp_y].setUnder(underObjectTemp);
-//                        ground_G[temp_x][temp_y].setIcon(new ImageIcon(objAry_G[temp_x][temp_y].getPic_location()));
-//                    }
-//                }
-//            }
         }
     }
 

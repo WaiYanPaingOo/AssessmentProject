@@ -1,12 +1,27 @@
 package Objects;
 
+import java.util.Random;
+
 public class Vehicle_Block extends Simulator_Obj{
     private int x_location;
     private int y_location;
-    private boolean just_rotate = false;
+    private String type;
+    private boolean just_rotate;
     public Vehicle_Block(int x_location, int y_location, char[] direction, String dir){
         super("Vehicle Block", dir,
                 false, null, direction, false, null);
+        this.just_rotate = false;
+        Random r = new Random();
+        int x = r.nextInt(4);
+        if(x == 1){
+            this.type = "Bic";
+        }
+        else if(x == 2){
+            this.type = "Bus";
+        }
+        else{
+            this.type = "Car";
+        }
         this.x_location = x_location;
         this.y_location = y_location;
     }
@@ -15,16 +30,8 @@ public class Vehicle_Block extends Simulator_Obj{
         return x_location;
     }
 
-    public void setX_location(int x_location) {
-        this.x_location = x_location;
-    }
-
     public int getY_location() {
         return y_location;
-    }
-
-    public void setY_location(int y_location) {
-        this.y_location = y_location;
     }
 
     public boolean isJust_rotate() {
@@ -39,22 +46,54 @@ public class Vehicle_Block extends Simulator_Obj{
     {
         if(this.getDirection()[0] == 'E')
         {
-            this.setPic_location("/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/car_T.png");
+            if(this.type.equals("Car")){
+                this.setPic_location("/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/car_T.png");
+            }
+            else if(this.type.equals("Bus")){
+                this.setPic_location("/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/bus_E.png");
+            }
+            else if(this.type.equals("Bic")){
+                this.setPic_location("/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/bik_E.png");
+            }
             this.y_location++;
         }
         else if(this.getDirection()[0] == 'W')
         {
-            this.setPic_location("/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/car_W.png");
+            if(this.type.equals("Car")){
+                this.setPic_location("/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/car_W.png");
+            }
+            else if(this.type.equals("Bus")){
+                this.setPic_location("/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/bus_W.png");
+            }
+            else if(this.type.equals("Bic")){
+                this.setPic_location("/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/bik_W.png");
+            }
             this.y_location--;
         }
         else if(this.getDirection()[0] == 'N')
         {
-            this.setPic_location("/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/car_N.png");
+            if(this.type.equals("Car")){
+                this.setPic_location("/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/car_N.png");
+            }
+            else if(this.type.equals("Bus")){
+                this.setPic_location("/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/bus_N.png");
+            }
+            else if(this.type.equals("Bic")){
+                this.setPic_location("/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/bik_N.png");
+            }
             this.x_location--;
         }
         else if(this.getDirection()[0] == 'S')
         {
-            this.setPic_location("/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/car_S.png");
+            if(this.type.equals("Car")){
+                this.setPic_location("/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/car_S.png");
+            }
+            else if(this.type.equals("Bus")){
+                this.setPic_location("/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/bus_S.png");
+            }
+            else if(this.type.equals("Bic")){
+                this.setPic_location("/Users/waiyanpaingoo/Desktop/Second Sem/Java/Assessment/src/Photo/bik_S.png");
+            }
             this.x_location++;
         }
     }

@@ -23,10 +23,6 @@ public class Simulator_Obj {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public String getPic_location() {
         return pic_location;
     }
@@ -37,10 +33,6 @@ public class Simulator_Obj {
 
     public boolean isDrivable() {
         return drivable;
-    }
-
-    public void setDrivable(boolean drivable) {
-        this.drivable = drivable;
     }
 
     public Simulator_Obj getUnder() {

@@ -18,6 +18,11 @@ public class Game_GUI extends SimulatorValue implements ActionListener, KeyListe
     private JButton btn_stop = new JButton("Stop Simulate");
     private JButton btn_pause = new JButton("Pause Simulate");
     private JButton btn_go = new JButton("Resume Simulate");
+    private JButton btn_sum = new JButton("+");
+    private JButton btn_sub = new JButton("-");
+
+    private JLabel lbl_car = new JLabel("Car Speed : ");
+    private JLabel lbl_speed = new JLabel();
 
     private JButton btn_road1 = new JButton("Add Straight Road");
     private JButton btn_road2 = new JButton("Add 4-way Road");
@@ -41,6 +46,8 @@ public class Game_GUI extends SimulatorValue implements ActionListener, KeyListe
         btn_stop.addActionListener(this);
         btn_pause.addActionListener(this);
         btn_go.addActionListener(this);
+        btn_sum.addActionListener(this);
+        btn_sub.addActionListener(this);
 
         btn_reset.setBackground(paint);
         btn_load.setBackground(paint);
@@ -50,15 +57,25 @@ public class Game_GUI extends SimulatorValue implements ActionListener, KeyListe
         btn_stop.setBackground(paint);
         btn_pause.setBackground(paint);
         btn_go.setBackground(paint);
+        btn_sum.setBackground(paint);
+        btn_sub.setBackground(paint);
 
         btn_pause.setVisible(false);
         btn_go.setVisible(false);
         btn_stop.setVisible(false);
+        btn_sum.setVisible(false);
+        btn_sub.setVisible(false);
+        lbl_speed.setVisible(false);
+        lbl_car.setVisible(false);
 
         p_btn.add(btn_reset);
         p_btn.add(btn_load);
         p_btn.add(btn_save);
         p_btn.add(btn_exit);
+        p_btn.add(lbl_car);
+        p_btn.add(lbl_speed);
+        p_btn.add(btn_sum);
+        p_btn.add(btn_sub);
         p_btn.add(btn_pause);
         p_btn.add(btn_go);
         p_btn.add(btn_simulate);
@@ -71,7 +88,6 @@ public class Game_GUI extends SimulatorValue implements ActionListener, KeyListe
         panel1.addKeyListener(this);
         panel1.setFocusable(false);
         add(panel1, BorderLayout.CENTER);
-
 
         //button panel/
         JPanel p_road_btn = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -116,13 +132,29 @@ public class Game_GUI extends SimulatorValue implements ActionListener, KeyListe
            new Menu_GUI();
            this.dispose();
         }
+        else if (source == btn_sum) {
+            lbl_speed.setText(Integer.toString(carSpeed));
+            carSpeed = carSpeed + 50;
+            carTimer.setDelay(carSpeed);
+        }
+        else if (source == btn_sub) {
+            lbl_speed.setText(Integer.toString(carSpeed));
+            carSpeed = carSpeed - 50;
+            carTimer.setDelay(carSpeed);
+        }
         else if (source == btn_simulate) {
+            lbl_speed.setText(Integer.toString(carSpeed));
             btn_reset.setVisible(false);
             btn_load.setVisible(false);
             btn_save.setVisible(false);
             btn_exit.setVisible(false);
             btn_pause.setVisible(true);
             btn_go.setVisible(false);
+
+            btn_sum.setVisible(true);
+            btn_sub.setVisible(true);
+            lbl_car.setVisible(true);
+            lbl_speed.setVisible(true);
 
             btn_stop.setVisible(true);
             btn_simulate.setVisible(false);
@@ -147,6 +179,11 @@ public class Game_GUI extends SimulatorValue implements ActionListener, KeyListe
             btn_road1.setVisible(true);
             btn_road2.setVisible(true);
             btn_road3.setVisible(true);
+
+            btn_sum.setVisible(false);
+            btn_sub.setVisible(false);
+            lbl_car.setVisible(false);
+            lbl_speed.setVisible(false);
 
             carTimer.stop();
             trafficTimer.stop();
