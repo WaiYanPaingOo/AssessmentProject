@@ -292,12 +292,10 @@ public class Game_GUI extends SimulatorValue implements ActionListener, KeyListe
             endEditing(current_edit_road_type);
         }
     }
-
     @Override
     public void keyPressed(KeyEvent e) {
 
     }
-
     @Override
     public void keyReleased(KeyEvent e) {
 
